@@ -170,9 +170,9 @@ pública (Azure Functions, App Service o Container Apps).
 
 ---
 
-## 7. Qué tan difícil es llevarlo a producción
+## 7. Qué tan difícil es llevarlo a producción, y qué haría W-IT
 
-Lectura honesta, para conversar y ajustar con Legrand y Teknica:
+Lectura honesta de la dificultad:
 
 - **Simple** — la integración en sí (un endpoint + OAuth2 + `POST` a Dataverse) y agregar landings
   nuevas, que es configuración y no desarrollo.
@@ -182,10 +182,69 @@ Lectura honesta, para conversar y ajustar con Legrand y Teknica:
   línea, SLA de primer contacto, reglas de asignación y el consentimiento de datos personales
   (Ley 21.719). Integrando dos organizaciones, es acá donde se gana o se pierde la trazabilidad.
 
-Los tiempos que aparecen en el sitio son estimaciones preliminares de W-IT y deben validarse con el
-cliente antes de comprometer un plan.
+### Alcance propuesto de W-IT: la API y los componentes en Azure
 
----
+Las landings las produce Legrand con su equipo o su agencia; nosotros entregamos el contrato de
+datos y acompañamos la conexión.
+
+| Bloque | Componente | Qué incluye | Horas |
+|---|---|---|---:|
+| **1. Diseño y habilitación** | Diseño de la solución y contrato de la API | Payload común, catálogo de orígenes, criterios de validación | 8 |
+| | Habilitación de identidad | App Registration en Entra ID, Application User y rol de seguridad en Dataverse | 4 |
+| | Modelo de datos en Dynamics 365 | Columnas de origen, catálogo de campañas, vista de leads por landing | 6 |
+| | | *Subtotal* | **18** |
+| **2. API única de captura** | Endpoint y validaciones | Un endpoint para todas las landings, validación de campos, consentimiento y manejo de errores | 16 |
+| | Mapeo a la entidad Lead | Traducción al modelo de Dataverse y bloque de trazabilidad del origen | 10 |
+| | Catálogo de orígenes configurable | Alta de landings nuevas sin desarrollo ni despliegue | 6 |
+| | Anti-spam | Captcha y *rate limiting* por IP y por origen | 6 |
+| | Deduplicación | Búsqueda de duplicados por correo o RUT antes de crear el lead | 8 |
+| | | *Subtotal* | **46** |
+| **3. Componentes en Azure** | Azure Function App | Function App y plan de hosting, entornos de desarrollo y producción | 10 |
+| | Key Vault e identidad administrada | Custodia de secretos sin credenciales en el código | 6 |
+| | Dominio, TLS y CORS | Dominio propio, certificado y dominios autorizados a llamar la API | 6 |
+| | Application Insights | Trazas, alertas por error y tablero de salud de la API | 8 |
+| | Pipeline de despliegue | CI/CD en GitHub Actions o Azure DevOps hacia ambos entornos | 8 |
+| | | *Subtotal* | **38** |
+| **4. Pruebas y traspaso** | Pruebas integradas | Casos de validación, errores, carga básica y reintentos | 8 |
+| | UAT con landings piloto | Dos landings reales conectadas junto al equipo de marketing | 8 |
+| | Documentación | Contrato de la API y guía de alta de nuevas landings | 6 |
+| | Traspaso al equipo | Sesión de capacitación a TI y marketing | 6 |
+| | | *Subtotal* | **28** |
+| **5. Gestión** | Gestión y coordinación | Planificación, reuniones de avance y control de cambios (≈10%) | 13 |
+| | | **Total estimado** | **143 h** |
+
+Referencia de calendario: con una dedicación normal, el alcance se ejecuta en torno a **4 a 6
+semanas**, condicionado a la disponibilidad de los entornos y a decisiones comerciales que no
+dependen de W-IT.
+
+### Opcionales, se cotizan aparte
+
+| Opcional | Horas |
+|---|---:|
+| Taller de gobierno del origen: nomenclatura UTM, dueños y SLA | 8 |
+| Componente JS de referencia y apoyo a la agencia o CMS | 16 |
+| Ruteo y asignación automática por línea de negocio | 16 |
+| Tablero de atribución en Power BI | 24 |
+| Integración con Customer Insights – Journeys | Requiere levantamiento |
+
+### Fuera del alcance de W-IT (queda en Legrand y Teknica)
+
+- Diseño, maquetación y publicación de las landings en su CMS o con su agencia.
+- Contenido, pauta de campañas y presupuesto de medios.
+- Textos legales, política de privacidad y validación del consentimiento por su área legal.
+- Definición de dueños comerciales por línea, colas y SLA de primer contacto.
+- Licenciamiento de Dynamics 365 y consumo de la suscripción Azure.
+- Migración de leads históricos.
+
+### Supuestos de la estimación
+
+Un entorno productivo y uno de pruebas; hasta seis landings iniciales con el mismo contrato de
+datos; entidad Lead estándar sin procesos personalizados adicionales; landings capaces de enviar un
+`POST` JSON. Si algo de esto cambia, cambia la estimación.
+
+> Las horas son una **estimación preliminar de W-IT** y deben validarse con Legrand y Teknica antes
+> de comprometer un plan. La valorización y las condiciones comerciales las define el equipo
+> Comercial de W-IT.
 
 ## 8. Seguridad y datos
 

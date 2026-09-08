@@ -249,6 +249,17 @@ table.data { width: 100%; border-collapse: collapse; font-size: .86rem; }
 table.data th, table.data td { padding: 11px 12px; text-align: left; border-bottom: 1px solid var(--line); vertical-align: top; }
 table.data th { font-size: .74rem; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); }
 table.data tbody tr:hover { background: var(--surface-2); }
+table.data td.h { text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; }
+/* Filas de agrupacion y de suma en la tabla de horas */
+table.data tr.group td {
+  background: var(--surface-2); font-family: var(--font-head); font-weight: 700;
+  font-size: .78rem; text-transform: uppercase; letter-spacing: .08em; color: var(--ink);
+}
+table.data tr.sub td { font-weight: 600; color: var(--muted); border-bottom: 2px solid var(--line); }
+table.data tr.total td {
+  font-family: var(--font-head); font-weight: 800; font-size: .95rem; color: var(--ink);
+  background: color-mix(in srgb, var(--accent) 12%, transparent); border-bottom: 0;
+}
 .table-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: var(--radius); background: #fff; }
 
 /* --- Footer ----------------------------------------------------------- */

@@ -184,6 +184,8 @@
         La integración técnica es la parte simple y conocida. Lo que toma tiempo es el gobierno:
         acordar el catálogo de orígenes, el modelo de datos común, quién es dueño de cada lead y
         cómo se mide. Esta es la lectura honesta, para conversarla y ajustarla con ustedes.
+        Más abajo está el desglose en horas de lo que haríamos nosotros —la API y los componentes
+        en Azure— y lo que queda del lado de Legrand.
       </p>
     </div>
 
@@ -241,26 +243,99 @@
     </div>
 
     <div class="card" style="margin-top:26px">
-      <h3>Componentes de una implementación productiva</h3>
+      <span class="chip chip-accent" style="align-self:flex-start">Alcance propuesto de W-IT</span>
+      <h3 style="margin-top:12px">Construir la API y levantar los componentes en Azure</h3>
       <p class="small muted">
-        Referencia de alcance para conversar. Los tiempos son estimaciones preliminares de W-IT
-        y deben validarse con el equipo de Legrand y Teknica antes de comprometer un plan.
+        Nuestro alcance es el motor de la integración: la API única de captura, su infraestructura
+        en Azure y el modelo de datos en Dynamics. Las landings las produce Legrand con su equipo o
+        su agencia; nosotros entregamos el contrato de datos y acompañamos la conexión.
+        <b>Las horas son una estimación preliminar de W-IT y deben validarse con Legrand y Teknica
+        antes de comprometer un plan.</b> La valorización la define el equipo Comercial de W-IT.
       </p>
+
       <div class="table-wrap" style="margin-top:12px">
         <table class="data">
           <thead>
-            <tr><th>Componente</th><th>Qué incluye</th><th>Complejidad</th><th>Esfuerzo referencial (a validar)</th></tr>
+            <tr><th>Componente</th><th>Qué incluye</th><th style="text-align:right">Horas</th></tr>
           </thead>
           <tbody>
-            <tr><td><b>API de captura</b></td><td>Endpoint, validaciones, mapeo a Lead, autenticación, logs</td><td>Baja</td><td>Días</td></tr>
-            <tr><td><b>Modelo de datos en Dataverse</b></td><td>Columnas de origen, catálogo de campañas, conjuntos de opciones</td><td>Baja–Media</td><td>Días</td></tr>
-            <tr><td><b>Landings</b></td><td>Maquetación por línea de negocio, formularios, consentimiento, medición</td><td>Media</td><td>Depende del CMS y del diseño</td></tr>
-            <tr><td><b>Anti-spam y deduplicación</b></td><td>Captcha, rate limiting, reglas de duplicados en CRM</td><td>Media</td><td>Días</td></tr>
-            <tr><td><b>Ruteo y asignación</b></td><td>Reglas por línea, colas, SLA de primer contacto, notificaciones</td><td>Media</td><td>Semanas (incluye acuerdo comercial)</td></tr>
-            <tr><td><b>Reportería de atribución</b></td><td>Tablero de leads por landing, campaña y conversión</td><td>Media</td><td>Semanas</td></tr>
-            <tr><td><b>Cumplimiento de datos personales</b></td><td>Texto de consentimiento, registro de la aceptación, retención</td><td>Media</td><td>Requiere validación legal del cliente</td></tr>
+            <tr class="group"><td colspan="3">1 · Diseño y habilitación</td></tr>
+            <tr><td>Diseño de la solución y contrato de la API</td><td>Payload común, catálogo de orígenes, criterios de validación</td><td class="h">8</td></tr>
+            <tr><td>Habilitación de identidad</td><td>App Registration en Entra ID, Application User y rol de seguridad en Dataverse</td><td class="h">4</td></tr>
+            <tr><td>Modelo de datos en Dynamics 365</td><td>Columnas de origen, catálogo de campañas, vista de leads por landing</td><td class="h">6</td></tr>
+            <tr class="sub"><td colspan="2">Subtotal</td><td class="h">18</td></tr>
+
+            <tr class="group"><td colspan="3">2 · API única de captura</td></tr>
+            <tr><td>Endpoint y validaciones</td><td>Un endpoint para todas las landings, validación de campos, consentimiento y manejo de errores</td><td class="h">16</td></tr>
+            <tr><td>Mapeo a la entidad Lead</td><td>Traducción al modelo de Dataverse y bloque de trazabilidad del origen</td><td class="h">10</td></tr>
+            <tr><td>Catálogo de orígenes configurable</td><td>Alta de landings nuevas sin desarrollo ni despliegue</td><td class="h">6</td></tr>
+            <tr><td>Anti-spam</td><td>Captcha y <i>rate limiting</i> por IP y por origen</td><td class="h">6</td></tr>
+            <tr><td>Deduplicación</td><td>Búsqueda de duplicados por correo o RUT antes de crear el lead</td><td class="h">8</td></tr>
+            <tr class="sub"><td colspan="2">Subtotal</td><td class="h">46</td></tr>
+
+            <tr class="group"><td colspan="3">3 · Componentes en Azure</td></tr>
+            <tr><td>Azure Function App</td><td>Function App y plan de hosting, entornos de desarrollo y producción</td><td class="h">10</td></tr>
+            <tr><td>Key Vault e identidad administrada</td><td>Custodia de secretos sin credenciales en el código</td><td class="h">6</td></tr>
+            <tr><td>Dominio, TLS y CORS</td><td>Dominio propio, certificado y dominios autorizados a llamar la API</td><td class="h">6</td></tr>
+            <tr><td>Application Insights</td><td>Trazas, alertas por error y tablero de salud de la API</td><td class="h">8</td></tr>
+            <tr><td>Pipeline de despliegue</td><td>CI/CD en GitHub Actions o Azure DevOps hacia ambos entornos</td><td class="h">8</td></tr>
+            <tr class="sub"><td colspan="2">Subtotal</td><td class="h">38</td></tr>
+
+            <tr class="group"><td colspan="3">4 · Pruebas y traspaso</td></tr>
+            <tr><td>Pruebas integradas</td><td>Casos de validación, errores, carga básica y reintentos</td><td class="h">8</td></tr>
+            <tr><td>UAT con landings piloto</td><td>Dos landings reales conectadas junto al equipo de marketing</td><td class="h">8</td></tr>
+            <tr><td>Documentación</td><td>Contrato de la API y guía de alta de nuevas landings</td><td class="h">6</td></tr>
+            <tr><td>Traspaso al equipo</td><td>Sesión de capacitación a TI y marketing</td><td class="h">6</td></tr>
+            <tr class="sub"><td colspan="2">Subtotal</td><td class="h">28</td></tr>
+
+            <tr class="group"><td colspan="3">5 · Gestión</td></tr>
+            <tr><td>Gestión y coordinación</td><td>Planificación, reuniones de avance y control de cambios (≈10%)</td><td class="h">13</td></tr>
+
+            <tr class="total"><td colspan="2">Total estimado del alcance W-IT</td><td class="h">143 h</td></tr>
           </tbody>
         </table>
+      </div>
+      <p class="small muted" style="margin-top:12px;margin-bottom:0">
+        Referencia de calendario: con una dedicación normal, el alcance se ejecuta en torno a
+        4 a 6 semanas, condicionado a la disponibilidad de los entornos y a las decisiones
+        comerciales que no dependen de W-IT.
+      </p>
+    </div>
+
+    <div class="grid grid-2" style="margin-top:22px">
+      <div class="card">
+        <span class="chip">Opcional, se cotiza aparte</span>
+        <h3 style="margin-top:12px">Fuera del núcleo, si lo quieren con nosotros</h3>
+        <div class="table-wrap" style="margin-top:6px">
+          <table class="data">
+            <tbody>
+              <tr><td>Taller de gobierno del origen: nomenclatura UTM, dueños y SLA</td><td class="h">8</td></tr>
+              <tr><td>Componente JS de referencia y apoyo a la agencia o CMS</td><td class="h">16</td></tr>
+              <tr><td>Ruteo y asignación automática por línea de negocio</td><td class="h">16</td></tr>
+              <tr><td>Tablero de atribución en Power BI</td><td class="h">24</td></tr>
+              <tr><td>Integración con Customer Insights – Journeys</td><td class="h">Requiere levantamiento</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="card">
+        <span class="chip">Responsabilidad de Legrand y Teknica</span>
+        <h3 style="margin-top:12px">Fuera del alcance de W-IT</h3>
+        <ul class="small muted" style="padding-left:18px;margin:0">
+          <li>Diseño, maquetación y publicación de las landings en su CMS o con su agencia.</li>
+          <li>Contenido, pauta de campañas y presupuesto de medios.</li>
+          <li>Textos legales, política de privacidad y validación del consentimiento por su área legal.</li>
+          <li>Definición de dueños comerciales por línea, colas y SLA de primer contacto.</li>
+          <li>Licenciamiento de Dynamics 365 y consumo de la suscripción Azure.</li>
+          <li>Migración de leads históricos.</li>
+        </ul>
+        <p class="small muted" style="margin-top:14px;margin-bottom:0">
+          <b>Supuestos de la estimación:</b> un entorno productivo y uno de pruebas; hasta seis
+          landings iniciales con el mismo contrato de datos; entidad Lead estándar sin procesos
+          personalizados adicionales; landings capaces de enviar un <span class="mono">POST</span>
+          JSON. Si algo de esto cambia, cambia la estimación.
+        </p>
       </div>
     </div>
   </div>

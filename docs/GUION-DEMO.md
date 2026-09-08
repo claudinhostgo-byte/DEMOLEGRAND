@@ -39,10 +39,13 @@ Una API, cuatro landings, un solo lugar donde se mantiene el mapeo.
 propios. En producción esta pantalla es simplemente la vista de Clientes potenciales de Dynamics, y
 el enlace abre el registro real.
 
-**7. La dificultad (3 min).** Volver a la portada, sección *¿Qué tan difícil es implementarlo de
-verdad?*. Ser explícito: la integración es la parte fácil; lo que toma tiempo es acordar el catálogo
-de orígenes, los dueños comerciales, el SLA y el consentimiento. Aquí es donde W-IT aporta como
-consultor, no solo como desarrollador.
+**7. La dificultad y el alcance (3 min).** Volver a la portada, sección *¿Qué tan difícil es
+implementarlo de verdad?*. Ser explícito: la integración es la parte fácil; lo que toma tiempo es
+acordar el catálogo de orígenes, los dueños comerciales, el SLA y el consentimiento. Bajar a la
+tabla de horas y dejar clara la división: **W-IT construye la API y levanta los componentes en
+Azure (≈143 h, 4 a 6 semanas); las landings las produce Legrand con su equipo o su agencia.**
+Decir en voz alta que son estimaciones preliminares a validar y que la valorización la ve el equipo
+Comercial de W-IT.
 
 ## Preguntas que probablemente aparezcan
 
@@ -65,7 +68,10 @@ lead. El texto definitivo lo debe validar el área legal del cliente (Ley 21.719
 
 ## Qué NO prometer en la reunión
 
-- Plazos o precios cerrados: los esfuerzos que muestra el sitio son referenciales y deben validarse.
+- Plazos o precios cerrados: las horas que muestra el sitio son una estimación preliminar y deben
+  validarse; los precios y condiciones comerciales los define el equipo Comercial de W-IT.
+- Alcance sobre las landings: nosotros entregamos el contrato de datos y acompañamos la conexión,
+  no la producción de las páginas.
 - Que la demo es el producto final: es un ambiente de demostración, sin captcha, sin deduplicación y
   sin las reglas de asignación reales.
 - Integraciones con sistemas del cliente que todavía no hemos revisado.
