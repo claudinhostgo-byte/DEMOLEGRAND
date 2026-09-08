@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="es-CL" data-brand="wit">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Consola de leads capturados | Demo W-IT</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230D3445'/%3E%3Cpath d='M6 10h4l2 8 2-8h4l2 8 2-8h4l-4 14h-5l-1-5-1 5H10z' fill='%2374E507'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/site.css">
+</head>
+<body>
+
+<div class="demobar">
+  Consola de la DEMO. En producción esta vista es simplemente la vista de <b>Clientes potenciales</b> de Dynamics 365.
+</div>
+
+<header class="topbar">
+  <div class="wrap">
+    <img class="logo" src="assets/img/logo-wit-blanco.svg" alt="W-IT">
+    <span class="brandmark">Consola de leads capturados</span>
+    <nav>
+      <a href="index.html" class="hide-sm">Sitio maestro</a>
+      <a class="pill" href="index.html#landings">Ir a las landings</a>
+    </nav>
+  </div>
+</header>
+
+<section class="tight">
+  <div class="wrap">
+    <div class="section-head" style="margin-bottom:22px">
+      <h2>Lo que llegó por la API</h2>
+      <p class="muted">
+        Cada fila es un envío recibido por el endpoint único <span class="mono">POST /api/leads</span>,
+        con el código de la landing de origen, los parámetros de campaña y los campos propios de esa
+        línea de negocio. En modo <b>MOCK</b> los leads se guardan en
+        <span class="mono">api/_data/leads.json</span>; en modo <b>DATAVERSE</b> cada fila corresponde
+        a un registro real de la entidad Lead y el enlace abre el registro en el CRM.
+      </p>
+    </div>
+
+    <div class="chiprow" id="leads-source" style="margin-bottom:16px">
+      <span class="chip">Cargando…</span>
+    </div>
+
+    <div class="table-wrap">
+      <table class="data">
+        <thead>
+          <tr>
+            <th>Recibido (UTC)</th>
+            <th>Origen</th>
+            <th>Contacto</th>
+            <th>Empresa</th>
+            <th>Campaña y campos propios</th>
+            <th>Lead</th>
+          </tr>
+        </thead>
+        <tbody id="leads-body">
+          <tr><td colspan="6" class="muted" style="padding:28px">Cargando…</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p style="margin-top:20px" class="chiprow">
+      <button class="btn btn-dark btn-sm" id="btn-refresh" type="button">Actualizar</button>
+      <button class="btn btn-sm" id="btn-clear-local" type="button" style="background:var(--surface-2);color:var(--ink)">
+        Limpiar registro local del navegador
+      </button>
+    </p>
+    <p class="small muted">
+      El botón de limpieza solo borra la copia que guarda el navegador para poder demostrar sin API.
+      No borra <span class="mono">api/_data/leads.json</span> ni ningún registro de Dynamics 365.
+    </p>
+  </div>
+</section>
+
+<footer class="site">
+  <div class="wrap">
+    <img class="logo" src="assets/img/logo-wit-blanco.svg" alt="W-IT">
+    <span class="disclaimer">
+      Demo técnica de W-IT sobre integración de landing pages con la entidad Lead de Dynamics 365.
+    </span>
+    <span style="margin-left:auto"><a href="https://w-it.cl" target="_blank" rel="noopener">w-it.cl</a></span>
+  </div>
+</footer>
+
+<script src="assets/js/config.js"></script>
+<script src="assets/js/site.js"></script>
+</body>
+</html>

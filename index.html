@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="es-CL" data-brand="wit">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Demo integración landings → Dynamics 365 | W-IT</title>
+<meta name="description" content="Demo funcional W-IT: cuatro landing pages de distintas líneas de negocio que capturan leads con su código de origen y los envían a la entidad Lead de Dynamics 365 a través de una sola API.">
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230D3445'/%3E%3Cpath d='M6 10h4l2 8 2-8h4l2 8 2-8h4l-4 14h-5l-1-5-1 5H10z' fill='%2374E507'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/site.css">
+</head>
+<body>
+
+<div class="demobar">
+  Ambiente de DEMOSTRACIÓN técnica de W-IT. Los datos que ingreses son de prueba y no se usan con fines comerciales.
+</div>
+
+<header class="topbar">
+  <div class="wrap">
+    <img class="logo" src="assets/img/logo-wit-blanco.svg" alt="W-IT">
+    <span class="brandmark">Demo integración landings · Dynamics 365</span>
+    <nav>
+      <a href="#landings" class="hide-sm">Las 4 landings</a>
+      <a href="#como-funciona" class="hide-sm">Cómo funciona</a>
+      <a href="#dificultad" class="hide-sm">Dificultad</a>
+      <a class="pill" href="admin.html">Consola de leads</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap">
+    <div class="hero-grid">
+      <div>
+        <span class="eyebrow">Demo funcional · Legrand + Teknica</span>
+        <h1>Cuatro landings distintas,<br>un solo CRM.</h1>
+        <p class="lead">
+          Cada línea de negocio del grupo publica su propia landing con su identidad, su formulario
+          y sus campos propios. Todas envían el formulario a <b>una única API</b>, que valida el
+          origen, lo traduce al modelo de datos de Dynamics 365 y crea el registro en la
+          entidad <b>Lead</b> con la trazabilidad completa de dónde vino.
+        </p>
+        <ul class="bullets">
+          <li>1 endpoint <span class="mono">POST /api/leads</span> para las 4 landings (y las que vengan después)</li>
+          <li>Código de origen por landing: <span class="mono">LGD-DC-001</span>, <span class="mono">TKN-UPS-002</span>, <span class="mono">LGD-IND-003</span>, <span class="mono">LGD-RET-004</span></li>
+          <li>Captura automática de UTM, referrer y campaña para atribuir la demanda</li>
+          <li>Ruteo del lead al equipo comercial correcto según la landing de origen</li>
+        </ul>
+        <p style="margin-top:30px">
+          <a class="btn btn-primary" href="#landings">Ver las 4 landings</a>
+          <a class="btn btn-ghost" href="#como-funciona">Cómo funciona la integración</a>
+        </p>
+      </div>
+      <div>
+        <div class="trace-head"><span class="t">Lo que recibe la API</span></div>
+        <pre class="trace">{
+  <span class="k">"landingCode"</span>: <span class="v">"TKN-UPS-002"</span>,
+  <span class="k">"firstName"</span>: <span class="v">"Martín"</span>,
+  <span class="k">"lastName"</span>: <span class="v">"Rojas"</span>,
+  <span class="k">"email"</span>: <span class="v">"m.rojas@cliente.cl"</span>,
+  <span class="k">"company"</span>: <span class="v">"Minera Andes"</span>,
+  <span class="k">"fields"</span>: {
+    <span class="k">"potencia"</span>: <span class="v">"120 kVA"</span>,
+    <span class="k">"criticidad"</span>: <span class="v">"Crítica 24/7"</span>
+  },
+  <span class="k">"tracking"</span>: {
+    <span class="k">"utm_source"</span>: <span class="v">"linkedin"</span>,
+    <span class="k">"utm_campaign"</span>: <span class="v">"UPS-2026-Q3"</span>
+  },
+  <span>"consent"</span>: true
+}</pre>
+        <p class="small" style="color:rgba(255,255,255,.6);margin-top:12px">
+          El mismo contrato para las 4 landings. Lo único que cambia es
+          <span class="mono">landingCode</span> y el bloque <span class="mono">fields</span>.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="tight alt">
+  <div class="wrap">
+    <div class="chiprow" id="api-health">
+      <span class="chip">Verificando estado de la API…</span>
+    </div>
+  </div>
+</section>
+
+<section id="landings">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Elige una línea de negocio</h2>
+      <p class="muted">
+        Cuatro landings construidas sobre las líneas reales del grupo en Chile: infraestructura
+        digital y data centers, respaldo y calidad de energía (Teknica), distribución de energía
+        para industria y minería, y sector terciario con Bticino. Cada tarjeta abre su landing
+        con parámetros de campaña ya incorporados en el enlace.
+      </p>
+    </div>
+    <div class="grid grid-4" id="landing-cards">
+      <div class="card"><p class="muted">Cargando catálogo de landings…</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="como-funciona" class="alt">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Cómo funciona</h2>
+      <p class="muted">
+        La clave del diseño es que la landing no sabe nada de Dynamics. Solo conoce su código de
+        origen y el endpoint. Toda la lógica de mapeo, validación y autenticación vive en un
+        único punto, y ese punto es el que se mantiene.
+      </p>
+    </div>
+
+    <div class="flow" style="margin-bottom:40px">
+      <div class="node"><b>4 landings</b>HTML estático, cada una con su marca, su formulario y su código de origen</div>
+      <div class="arrow">→</div>
+      <div class="node hi"><b>1 API de captura</b>Valida, normaliza, resuelve el origen y arma el payload del lead</div>
+      <div class="arrow">→</div>
+      <div class="node"><b>Dataverse Web API</b>OAuth2 client_credentials con App Registration de Entra ID</div>
+      <div class="arrow">→</div>
+      <div class="node"><b>Entidad Lead</b>Registro con origen, campaña, UTM y campos propios de la landing</div>
+      <div class="arrow">→</div>
+      <div class="node"><b>Comercial</b>Ruteo al equipo dueño de esa línea y seguimiento en el CRM</div>
+    </div>
+
+    <div class="grid grid-2">
+      <div class="card">
+        <h3>Qué hace la API en cada envío</h3>
+        <div class="steps" style="margin-top:14px">
+          <div class="step"><div>
+            <h4>Valida el origen</h4>
+            <p class="small muted">Si el <span class="mono">landingCode</span> no está en el catálogo, rechaza el envío. Nadie publica una landing sin registrarla.</p>
+          </div></div>
+          <div class="step"><div>
+            <h4>Valida los datos y el consentimiento</h4>
+            <p class="small muted">Campos obligatorios, formato de correo y teléfono, y aceptación explícita del tratamiento de datos (Ley 21.719).</p>
+          </div></div>
+          <div class="step"><div>
+            <h4>Traduce al modelo de Dynamics</h4>
+            <p class="small muted">Campos comunes a <span class="mono">firstname</span>, <span class="mono">lastname</span>, <span class="mono">emailaddress1</span>, <span class="mono">companyname</span>; el origen a <span class="mono">leadsourcecode</span> y a columnas propias si existen.</p>
+          </div></div>
+          <div class="step"><div>
+            <h4>Escribe la trazabilidad</h4>
+            <p class="small muted">Landing, campaña, UTM, referrer y campos específicos quedan en la descripción del lead, legibles para el vendedor.</p>
+          </div></div>
+          <div class="step"><div>
+            <h4>Crea el lead y devuelve el id</h4>
+            <p class="small muted"><span class="mono">POST /api/data/v9.2/leads</span> con <span class="mono">Prefer: return=representation</span> para responder con el <span class="mono">leadid</span> real.</p>
+          </div></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Origen capturado en tu sesión ahora mismo</h3>
+        <p class="small muted">
+          Esto es lo que el navegador ya sabe de dónde vienes. Se conserva mientras navegas
+          entre el sitio maestro y las landings, y viaja con el formulario.
+        </p>
+        <pre class="trace" id="origin-json" style="margin-top:6px">{}</pre>
+        <p class="small muted" style="margin-top:14px">
+          Prueba a entrar a una landing simulando una campaña:
+        </p>
+        <div class="chiprow">
+          <a class="btn btn-sm btn-dark" href="landings/ups-continuidad.html?utm_source=linkedin&utm_medium=paid&utm_campaign=UPS-2026-Q3&utm_content=carrusel-mineria">LinkedIn pagado → UPS</a>
+          <a class="btn btn-sm btn-dark" href="landings/datacenter.html?utm_source=google&utm_medium=cpc&utm_campaign=DC-2026-Q3&gclid=DEMO-123">Google Ads → Data Center</a>
+          <a class="btn btn-sm btn-dark" href="landings/industria.html?utm_source=mailing&utm_medium=email&utm_campaign=IND-2026-Q3">Mailing → Industria</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="dificultad">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>¿Qué tan difícil es implementarlo de verdad?</h2>
+      <p class="muted">
+        La integración técnica es la parte simple y conocida. Lo que toma tiempo es el gobierno:
+        acordar el catálogo de orígenes, el modelo de datos común, quién es dueño de cada lead y
+        cómo se mide. Esta es la lectura honesta, para conversarla y ajustarla con ustedes.
+      </p>
+    </div>
+
+    <div class="grid grid-3">
+      <div class="card">
+        <span class="chip chip-accent">Simple</span>
+        <h3 style="margin-top:12px">La integración en sí</h3>
+        <p class="small muted">
+          Un endpoint, autenticación con App Registration, <span class="mono">POST</span> a
+          <span class="mono">/api/data/v9.2/leads</span>. Es un patrón estándar de Dataverse y no
+          cambia si mañana hay 4, 10 o 30 landings.
+        </p>
+      </div>
+      <div class="card">
+        <span class="chip chip-accent">Simple</span>
+        <h3 style="margin-top:12px">Agregar una landing nueva</h3>
+        <p class="small muted">
+          Registrar el código en el catálogo y publicar el HTML apuntando al mismo endpoint.
+          Sin tocar la API ni el CRM: es configuración, no desarrollo.
+        </p>
+      </div>
+      <div class="card">
+        <span class="chip">Medio</span>
+        <h3 style="margin-top:12px">Campos propios por línea</h3>
+        <p class="small muted">
+          Cada línea quiere sus datos (kVA, racks, m²). Se resuelve con columnas personalizadas
+          o con un bloque estructurado en la descripción. La decisión es de reporting, no técnica.
+        </p>
+      </div>
+      <div class="card">
+        <span class="chip">Medio</span>
+        <h3 style="margin-top:12px">Anti-spam y calidad del dato</h3>
+        <p class="small muted">
+          Sin protección, un formulario público se llena de basura. Se requiere captcha,
+          rate limiting y deduplicación por correo o RUT antes de crear el lead.
+        </p>
+      </div>
+      <div class="card">
+        <span class="chip">Medio</span>
+        <h3 style="margin-top:12px">Hosting y CORS</h3>
+        <p class="small muted">
+          Las landings suelen vivir en el CMS de marketing y la API en Azure. Hay que definir
+          dominios permitidos, certificados y monitoreo de la API.
+        </p>
+      </div>
+      <div class="card">
+        <span class="chip">Lo difícil</span>
+        <h3 style="margin-top:12px">Gobierno del origen y ruteo</h3>
+        <p class="small muted">
+          Nomenclatura única de campañas, dueño comercial por línea, SLA de contacto, reglas de
+          asignación y consentimiento de datos personales. Aquí es donde se gana o se pierde la
+          trazabilidad, sobre todo integrando dos organizaciones.
+        </p>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:26px">
+      <h3>Componentes de una implementación productiva</h3>
+      <p class="small muted">
+        Referencia de alcance para conversar. Los tiempos son estimaciones preliminares de W-IT
+        y deben validarse con el equipo de Legrand y Teknica antes de comprometer un plan.
+      </p>
+      <div class="table-wrap" style="margin-top:12px">
+        <table class="data">
+          <thead>
+            <tr><th>Componente</th><th>Qué incluye</th><th>Complejidad</th><th>Esfuerzo referencial (a validar)</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><b>API de captura</b></td><td>Endpoint, validaciones, mapeo a Lead, autenticación, logs</td><td>Baja</td><td>Días</td></tr>
+            <tr><td><b>Modelo de datos en Dataverse</b></td><td>Columnas de origen, catálogo de campañas, conjuntos de opciones</td><td>Baja–Media</td><td>Días</td></tr>
+            <tr><td><b>Landings</b></td><td>Maquetación por línea de negocio, formularios, consentimiento, medición</td><td>Media</td><td>Depende del CMS y del diseño</td></tr>
+            <tr><td><b>Anti-spam y deduplicación</b></td><td>Captcha, rate limiting, reglas de duplicados en CRM</td><td>Media</td><td>Días</td></tr>
+            <tr><td><b>Ruteo y asignación</b></td><td>Reglas por línea, colas, SLA de primer contacto, notificaciones</td><td>Media</td><td>Semanas (incluye acuerdo comercial)</td></tr>
+            <tr><td><b>Reportería de atribución</b></td><td>Tablero de leads por landing, campaña y conversión</td><td>Media</td><td>Semanas</td></tr>
+            <tr><td><b>Cumplimiento de datos personales</b></td><td>Texto de consentimiento, registro de la aceptación, retención</td><td>Media</td><td>Requiere validación legal del cliente</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="site">
+  <div class="wrap">
+    <img class="logo" src="assets/img/logo-wit-blanco.svg" alt="W-IT">
+    <span class="disclaimer">
+      Demo técnica preparada por W-IT, partner Microsoft en Chile, para ilustrar la integración de
+      múltiples landing pages con la entidad Lead de Dynamics 365. Legrand, Bticino, Teknica y
+      Enersafe son marcas de sus respectivos titulares; este ambiente no es un sitio oficial de esas marcas.
+    </span>
+    <span style="margin-left:auto"><a href="https://w-it.cl" target="_blank" rel="noopener">w-it.cl</a></span>
+  </div>
+</footer>
+
+<script src="assets/js/config.js"></script>
+<script src="assets/js/site.js"></script>
+</body>
+</html>

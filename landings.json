@@ -1,0 +1,75 @@
+{
+  "_comment": "FUENTE ÚNICA DE VERDAD de la demo. La lee el sitio maestro (JS) y la API (Python). Agregar una landing nueva = agregar un objeto aquí + un HTML que apunte al mismo código.",
+  "version": "1.0",
+  "defaults": {
+    "leadsourcecode": 8,
+    "leadsourcecode_label": "Web",
+    "subject_template": "[{code}] {interes} - {company}"
+  },
+  "landings": [
+    {
+      "code": "LGD-DC-001",
+      "slug": "datacenter",
+      "brand": "legrand",
+      "name": "Data Center e Infraestructura Digital",
+      "tagline": "Cableado estructurado LCS³, racks y distribución de energía para data centers",
+      "url": "landings/datacenter.html",
+      "owner_team": "Infraestructura Digital",
+      "leadsourcecode": 8,
+      "campaign": "DC-2026-Q3",
+      "extra_fields": [
+        { "key": "tipoProyecto", "label": "Tipo de proyecto" },
+        { "key": "racks", "label": "Racks estimados" },
+        { "key": "plazo", "label": "Plazo estimado" }
+      ]
+    },
+    {
+      "code": "TKN-UPS-002",
+      "slug": "ups-continuidad",
+      "brand": "teknica",
+      "name": "UPS, Power Quality y Continuidad Operacional",
+      "tagline": "Respaldo de energía, calidad de energía y mantención de infraestructura crítica",
+      "url": "landings/ups-continuidad.html",
+      "owner_team": "Teknica - Continuidad Operacional",
+      "leadsourcecode": 8,
+      "campaign": "UPS-2026-Q3",
+      "extra_fields": [
+        { "key": "potencia", "label": "Potencia requerida (kVA)" },
+        { "key": "criticidad", "label": "Nivel de criticidad" },
+        { "key": "servicio", "label": "Tipo de requerimiento" }
+      ]
+    },
+    {
+      "code": "LGD-IND-003",
+      "slug": "industria",
+      "brand": "legrand",
+      "name": "Industria: Distribución de Energía y Tableros",
+      "tagline": "Protección modular, ductos de barra, canalización y bandejas para industria y minería",
+      "url": "landings/industria.html",
+      "owner_team": "Industria y Proyectos",
+      "leadsourcecode": 8,
+      "campaign": "IND-2026-Q3",
+      "extra_fields": [
+        { "key": "perfil", "label": "Perfil del contacto" },
+        { "key": "industria", "label": "Industria" },
+        { "key": "familia", "label": "Familia de producto" }
+      ]
+    },
+    {
+      "code": "LGD-RET-004",
+      "slug": "retail-terciario",
+      "brand": "bticino",
+      "name": "Retail, Hospitales y Edificios",
+      "tagline": "Soluciones Bticino para el sector terciario: retail, salud, hotelería y oficinas",
+      "url": "landings/retail-terciario.html",
+      "owner_team": "Terciario y Retail",
+      "leadsourcecode": 8,
+      "campaign": "RET-2026-Q3",
+      "extra_fields": [
+        { "key": "tipoEdificacion", "label": "Tipo de edificación" },
+        { "key": "superficie", "label": "Superficie aproximada (m²)" },
+        { "key": "etapa", "label": "Etapa del proyecto" }
+      ]
+    }
+  ]
+}

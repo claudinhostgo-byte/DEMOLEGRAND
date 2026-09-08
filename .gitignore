@@ -1,0 +1,15 @@
+# Secretos: NUNCA subir credenciales de Dataverse
+.env
+api/.env
+*.secret
+.token.txt
+
+# Datos de la demo (leads capturados en modo MOCK)
+api/_data/*.json
+!api/_data/.gitkeep
+
+# Sistema
+Thumbs.db
+desktop.ini
+__pycache__/
+*.pyc
