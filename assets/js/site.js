@@ -40,6 +40,8 @@
     ]
   };
 
+  function plural(n, uno, muchos) { return n + " " + (n === 1 ? uno : muchos); }
+
   function esc(text) {
     return String(text === undefined || text === null ? "" : text)
       .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
@@ -127,7 +129,7 @@
       .then(function (d) {
         if (source) {
           source.innerHTML = '<span class="chip chip-accent">Fuente: API (' +
-            esc(d.mode) + ')</span> <span class="chip">' + d.count + ' leads</span>';
+            esc(d.mode) + ')</span> <span class="chip">' + plural(d.count, "lead", "leads") + '</span>';
         }
         paint(tbody, (d.leads || []).map(function (l) {
           return {
@@ -143,7 +145,7 @@
         try { local = JSON.parse(localStorage.getItem(LEADS_KEY) || "[]"); } catch (e) { local = []; }
         if (source) {
           source.innerHTML = '<span class="chip">Fuente: navegador (localStorage)</span> ' +
-            '<span class="chip">' + local.length + ' leads</span> ' +
+            '<span class="chip">' + plural(local.length, "lead", "leads") + '</span> ' +
             '<span class="chip">API no disponible</span>';
         }
         paint(tbody, local);
