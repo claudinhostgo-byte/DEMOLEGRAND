@@ -24,5 +24,5 @@ if %errorlevel%==0 (
 )
 
 start "" http://localhost:8080/
-"%PY%" api\lead_api.py
+"%PY%" tools\dev_server.py
 pause

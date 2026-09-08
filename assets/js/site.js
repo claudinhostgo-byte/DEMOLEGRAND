@@ -49,7 +49,8 @@
   }
 
   function loadCatalog() {
-    return fetch(CFG.landingsUrl, { cache: "no-store" })
+    var base = (CFG.apiBaseUrl || "").replace(/\/$/, "");
+    return fetch(base + (CFG.landingsEndpoint || "/api/landings"), { cache: "no-store" })
       .then(function (r) { if (!r.ok) { throw new Error("HTTP " + r.status); } return r.json(); })
       .catch(function () { return FALLBACK; });
   }

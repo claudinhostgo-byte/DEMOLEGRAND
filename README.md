@@ -21,8 +21,11 @@ esa línea).
 | Landing 2 · `TKN-UPS-002` | `landings/ups-continuidad.html` | UPS, Power Quality y Continuidad Operacional (Teknica) |
 | Landing 3 · `LGD-IND-003` | `landings/industria.html` | Distribución de energía y tableros para industria (Legrand) |
 | Landing 4 · `LGD-RET-004` | `landings/retail-terciario.html` | Retail, hospitales y edificios (Bticino) |
-| **API única** | `api/lead_api.py` | `POST /api/leads` — el **único** endpoint que usan las 4 landings |
-| Catálogo de orígenes | `landings.json` | Fuente única de verdad: códigos, marcas, equipos y campañas |
+| **Lógica de la API** | `api/lead_core.py` | Validación, mapeo a la entidad Lead y escritura en Dataverse. Un solo lugar, sin lógica duplicada |
+| **API en Azure** | `api/leads/`, `api/health/`, `api/landings/` | Azure Functions (Python) para Static Web Apps: `/api/leads` es el **único** endpoint que usan las 4 landings |
+| Servidor local | `tools/dev_server.py` | Sirve el sitio y la misma API en `localhost:8080`, importando `lead_core` |
+| Catálogo de orígenes | `api/landings.json` | Fuente única de verdad: códigos, marcas, equipos y campañas. Viaja con la API y se expone en `/api/landings` |
+| Configuración de Azure | `staticwebapp.config.json` | Runtime de la API, cabeceras de seguridad y rutas |
 | Consola de leads | `admin.html` | Muestra lo que llegó por la API (en producción, esto es la vista de Clientes potenciales del CRM) |
 | Generador de landings | `tools/build_landings.py` | Regenera las 4 landings desde una especificación corta |
 
@@ -37,7 +40,7 @@ calidad de energía, distribución de energía para industria y minería, y sect
 Requisito único: **Python 3.8+** (la API usa solo biblioteca estándar, sin `pip install`).
 
 ```bash
-py api/lead_api.py
+py tools/dev_server.py
 ```
 
 O bien doble clic en `run-demo.cmd`. Luego abrir <http://localhost:8080/>.
@@ -62,10 +65,11 @@ ningún entorno.
 
 Para escribir leads reales en Dynamics 365:
 
-1. Copiar `api/.env.example` a `api/.env`.
-2. Completar `DV_URL`, `DV_TENANT_ID`, `DV_CLIENT_ID`, `DV_CLIENT_SECRET`.
-3. Cambiar `LEAD_MODE=dataverse`.
-4. Reiniciar la API.
+1. En local: copiar `api/.env.example` a `api/.env` y completar `DV_URL`, `DV_TENANT_ID`,
+   `DV_CLIENT_ID`, `DV_CLIENT_SECRET`; en Azure: las mismas claves en la *Configuración de la
+   aplicación* de Static Web Apps (ver [docs/DESPLIEGUE-AZURE.md](docs/DESPLIEGUE-AZURE.md)).
+2. Cambiar `LEAD_MODE=dataverse`.
+3. Reiniciar la API (en Azure basta guardar la configuración).
 
 > **Antes de cambiar a `dataverse`, confirmar el entorno.** El `scope` del token lleva la URL del
 > entorno: ahí se decide en qué Dynamics caen los leads. `api/.env` está en `.gitignore` y **nunca**
@@ -158,17 +162,27 @@ py tools/build_landings.py
 
 ---
 
-## 6. Publicación en GitHub Pages
+## 6. Publicación
 
-El sitio es estático, así que se puede publicar tal cual desde este repositorio
-(*Settings → Pages → Deploy from branch → `main` / root*).
+### Azure Static Web Apps (recomendado)
 
-Con Pages **no hay backend**: al no encontrar la API, la demo responde en modo *SIMULADO* en el
-navegador y lo rotula como tal (`simulateIfUnreachable` en `assets/js/config.js`). Para que las
-landings publicadas escriban en Dynamics hay que desplegar la API y apuntar `apiBaseUrl` a su URL
-pública (Azure Functions, App Service o Container Apps).
+El sitio y la API se publican juntos: Static Web Apps enruta `/api` a las *managed functions*, así
+que no hay CORS que configurar ni `apiBaseUrl` que tocar. Valores del asistente:
 
----
+| Campo | Valor |
+|---|---|
+| Ubicación de la aplicación | `/` |
+| Ubicación de la API | `api` |
+| Ubicación de salida | *(vacío)* |
+
+El paso a paso completo —workflow, runtime de Python, configuración de la aplicación y verificación—
+está en **[docs/DESPLIEGUE-AZURE.md](docs/DESPLIEGUE-AZURE.md)**.
+
+### GitHub Pages (espejo estático)
+
+Sirve para mostrar el sitio sin backend (*Settings → Pages → Deploy from branch → `main` / root*).
+Al no encontrar la API, la demo responde en modo *SIMULADO* en el navegador y lo rotula como tal
+(`simulateIfUnreachable` en `assets/js/config.js`).
 
 ## 7. Qué tan difícil es llevarlo a producción, y qué haría W-IT
 

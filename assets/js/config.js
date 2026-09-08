@@ -23,8 +23,10 @@
     // Raiz del sitio (calculada, no editar).
     root: root,
 
-    // Catalogo de landings (fuente unica de verdad).
-    landingsUrl: root + "landings.json",
+    /* Catalogo de landings (fuente unica de verdad). Vive junto a la API
+       (api/landings.json) y se expone por este endpoint, para que el archivo
+       viaje con la Function al desplegar en Azure. */
+    landingsEndpoint: "/api/landings",
 
     /* Si la API no responde (sin servidor levantado, GitHub Pages sin backend),
        la demo simula la respuesta y lo rotula como SIMULADO para no cortar

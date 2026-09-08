@@ -6,7 +6,7 @@ Generador de las 4 landings de la demo.
 Todas las landings comparten la misma estructura, el mismo CSS y el mismo
 JavaScript: lo unico que cambia es el contenido y el codigo de origen. Este
 script deja eso explicito -> agregar una landing nueva es agregar un bloque a
-SPECS (y su entrada en landings.json), no escribir una pagina desde cero.
+SPECS (y su entrada en api/landings.json), no escribir una pagina desde cero.
 
     py tools/build_landings.py     ->  escribe landings/*.html
 """
@@ -361,7 +361,7 @@ def field_extra(slug, key, label, options, required):
 
 
 def build():
-    with io.open(os.path.join(ROOT, "landings.json"), encoding="utf-8") as fh:
+    with io.open(os.path.join(ROOT, "api", "landings.json"), encoding="utf-8") as fh:
         catalog = {l["code"]: l for l in json.load(fh)["landings"]}
 
     os.makedirs(OUT_DIR, exist_ok=True)
