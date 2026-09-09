@@ -25,7 +25,9 @@
     <nav>
       <a href="#landings" class="hide-sm">Las 4 landings</a>
       <a href="#como-funciona" class="hide-sm">Cómo funciona</a>
+      <a href="#ordenes" class="hide-sm">Órdenes</a>
       <a href="#dificultad" class="hide-sm">Dificultad</a>
+      <a href="ordenes.html" class="hide-sm">Órdenes de trabajo</a>
       <a class="pill" href="admin.html">Consola de leads</a>
     </nav>
   </div>
@@ -272,6 +274,44 @@
           <a class="btn btn-sm btn-dark" href="landings/datacenter.html?utm_source=google&utm_medium=cpc&utm_campaign=DC-2026-Q3&gclid=DEMO-123">Google Ads → Data Center</a>
           <a class="btn btn-sm btn-dark" href="landings/industria.html?utm_source=mailing&utm_medium=email&utm_campaign=IND-2026-Q3">Mailing → Industria</a>
         </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="ordenes">
+  <div class="wrap">
+    <div class="grid grid-2" style="align-items:center">
+      <div>
+        <span class="chip chip-accent">Segundo caso de uso</span>
+        <h2 style="margin-top:14px">La integración también funciona al revés: consultar</h2>
+        <p class="muted">
+          Las cuatro landings demuestran que un sitio externo puede <b>escribir</b> en Dynamics.
+          El mismo mecanismo sirve para <b>leer</b>: una página que consulta las órdenes de trabajo
+          de Field Service y las filtra por cliente, rango de fechas y estado.
+        </p>
+        <p class="muted">
+          Es la misma API, la misma conexión y el mismo App Registration. La página no tiene
+          credenciales ni conoce el CRM: solo llama a
+          <span class="mono">GET /api/workorders</span> y recibe los campos que la API decide
+          exponer, ya validados.
+        </p>
+        <p style="margin-top:22px">
+          <a class="btn btn-dark" href="ordenes.html">Consultar órdenes de trabajo</a>
+        </p>
+      </div>
+      <div class="card">
+        <h3>Qué muestra esa página</h3>
+        <ul class="small muted" style="padding-left:18px;margin:6px 0 0">
+          <li>Órdenes de trabajo reales de la entidad <span class="mono">msdyn_workorder</span>.</li>
+          <li>Filtros por cliente, rango de fechas y estado, resueltos en el servidor con OData.</li>
+          <li>Estado, ventana de atención, monto y enlace al registro en Dynamics.</li>
+          <li>La consulta enviada, a la vista, igual que en las landings.</li>
+        </ul>
+        <p class="small muted" style="margin-top:14px;margin-bottom:0">
+          En producción esta pantalla debe quedar detrás de autenticación: Static Web Apps la trae
+          integrada con Entra ID y se activa por configuración, sin desarrollo.
+        </p>
       </div>
     </div>
   </div>

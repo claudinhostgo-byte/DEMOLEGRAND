@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="es-CL" data-brand="wit">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Consulta de órdenes de trabajo | Demo W-IT</title>
+<meta name="description" content="Consulta de órdenes de trabajo de Dynamics 365 Field Service, filtrable por cliente, rango de fechas y estado, a través de la misma API de la demo.">
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230D3445'/%3E%3Cpath d='M6 10h4l2 8 2-8h4l2 8 2-8h4l-4 14h-5l-1-5-1 5H10z' fill='%2374E507'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/site.css">
+</head>
+<body>
+
+<div class="demobar">
+  Ambiente de DEMOSTRACIÓN de W-IT. Los clientes y las órdenes de trabajo son datos ficticios creados para esta demo.
+</div>
+
+<header class="topbar">
+  <div class="wrap">
+    <img class="logo" src="assets/img/logo-wit-blanco.svg" alt="W-IT">
+    <span class="brandmark">Órdenes de trabajo · Field Service</span>
+    <nav>
+      <a href="index.html" class="hide-sm">Sitio maestro</a>
+      <a href="admin.html" class="hide-sm">Consola de leads</a>
+      <a class="pill" href="index.html#como-funciona">Cómo funciona</a>
+    </nav>
+  </div>
+</header>
+
+<section class="tight">
+  <div class="wrap">
+    <div class="section-head" style="margin-bottom:26px">
+      <h2>Consulta de órdenes de trabajo</h2>
+      <p class="muted">
+        La otra cara de la misma integración. Si las landings demuestran que se puede
+        <b>escribir</b> en Dynamics desde un sitio externo, esta página demuestra que también se
+        puede <b>leer</b>: consulta en vivo la entidad <span class="mono">msdyn_workorder</span> de
+        Field Service, filtra por cliente, rango de fechas y estado, y nunca expone el CRM —
+        el sitio solo habla con la misma API, y la API es la única que tiene credenciales.
+      </p>
+    </div>
+
+    <div class="card" style="margin-bottom:22px">
+      <h3>Filtros</h3>
+      <form id="filtros" class="form-grid" style="grid-template-columns:repeat(4,1fr);margin-top:8px" novalidate onsubmit="return false;">
+        <div class="field">
+          <label for="f-cliente">Cliente</label>
+          <select id="f-cliente" name="cliente">
+            <option value="">Todos los clientes</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="f-desde">Desde</label>
+          <input id="f-desde" name="desde" type="date">
+        </div>
+        <div class="field">
+          <label for="f-hasta">Hasta</label>
+          <input id="f-hasta" name="hasta" type="date">
+        </div>
+        <div class="field">
+          <label for="f-estado">Estado</label>
+          <select id="f-estado" name="estado">
+            <option value="">Todos los estados</option>
+          </select>
+        </div>
+        <div class="full chiprow" style="align-items:center">
+          <button class="btn btn-dark btn-sm" type="submit" id="btn-buscar">Buscar órdenes</button>
+          <button class="btn btn-sm" type="button" id="btn-limpiar"
+                  style="background:var(--surface-2);color:var(--ink)">Limpiar filtros</button>
+          <span class="chip" id="atajo-mes" role="button" tabindex="0">Este mes</span>
+          <span class="chip" id="atajo-proximas" role="button" tabindex="0">Próximos 30 días</span>
+          <span class="chip" id="atajo-pendientes" role="button" tabindex="0">Solo pendientes</span>
+        </div>
+      </form>
+    </div>
+
+    <div class="chiprow" id="resumen" style="margin-bottom:14px">
+      <span class="chip">Consultando…</span>
+    </div>
+
+    <div class="table-wrap">
+      <table class="data">
+        <thead>
+          <tr>
+            <th>Orden</th>
+            <th>Cliente</th>
+            <th>Tipo de trabajo</th>
+            <th>Estado</th>
+            <th>Ventana de atención</th>
+            <th style="text-align:right">Monto</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="ordenes-body">
+          <tr><td colspan="7" class="muted" style="padding:28px">Cargando…</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div style="margin-top:26px">
+      <div class="trace-head">
+        <span class="t">Consulta enviada a la API</span>
+        <span class="chip mono">GET /api/workorders</span>
+      </div>
+      <pre class="trace" id="trace-consulta">{}</pre>
+      <p class="small muted" style="margin-top:12px">
+        La API traduce estos filtros a una consulta OData sobre Field Service y devuelve solo los
+        campos declarados. Los parámetros se validan antes de armar la consulta: un identificador
+        que no es un GUID o una fecha mal formada se rechazan, no se concatenan.
+      </p>
+    </div>
+  </div>
+</section>
+
+<footer class="site">
+  <div class="wrap">
+    <img class="logo" src="assets/img/logo-wit-blanco.svg" alt="W-IT">
+    <span class="disclaimer">
+      Demo técnica de W-IT. En producción esta consulta debe quedar detrás de autenticación:
+      Static Web Apps la trae integrada con Entra ID y se activa por configuración.
+    </span>
+    <span style="margin-left:auto"><a href="https://w-it.cl" target="_blank" rel="noopener">w-it.cl</a></span>
+  </div>
+</footer>
+
+<script src="assets/js/config.js"></script>
+<script src="assets/js/ordenes.js"></script>
+</body>
+</html>

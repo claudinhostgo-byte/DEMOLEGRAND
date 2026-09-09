@@ -11,6 +11,8 @@
 
    POST /api/leads      -> crea el lead
    GET  /api/leads      -> leads capturados (alimenta admin.html)
+   GET  /api/clientes   -> clientes con ordenes de trabajo
+   GET  /api/workorders -> ordenes de trabajo filtradas (Field Service)
    GET  /api/health     -> modo y configuracion visible
    GET  /api/landings   -> catalogo de origenes
    GET  /*              -> sitio estatico
@@ -30,6 +32,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(ROOT, "api"))
 
 import lead_core  # noqa: E402
+import workorders_core  # noqa: E402
 
 
 class Handler(SimpleHTTPRequestHandler):
@@ -84,6 +87,12 @@ class Handler(SimpleHTTPRequestHandler):
                                         "details": [str(err)]})
         if route == "/api/leads":
             return self._json(200, lead_core.list_leads())
+        if route == "/api/clientes":
+            return self._json(*workorders_core.listar_clientes())
+        if route == "/api/workorders":
+            q = urllib.parse.parse_qs(urllib.parse.urlparse(self.path).query)
+            filtros = {k: (q.get(k) or [""])[0] for k in ("cliente", "desde", "hasta", "estado", "top")}
+            return self._json(*workorders_core.listar_ordenes(filtros))
         if route.startswith("/api/"):
             return self._json(404, {"ok": False, "error": "Ruta no encontrada: " + route})
         if route == "/":

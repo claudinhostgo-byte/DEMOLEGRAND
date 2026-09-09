@@ -250,6 +250,7 @@ table.data th, table.data td { padding: 11px 12px; text-align: left; border-bott
 table.data th { font-size: .74rem; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); }
 table.data tbody tr:hover { background: var(--surface-2); }
 table.data td.h { text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; }
+table.data td.mono, table.data td a { white-space: nowrap; }
 /* Filas de agrupacion y de suma en la tabla de horas */
 table.data tr.group td {
   background: var(--surface-2); font-family: var(--font-head); font-weight: 700;
