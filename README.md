@@ -29,6 +29,7 @@ esa línea).
 | Consola de leads | `admin.html` | Muestra lo que llegó por la API (en producción, esto es la vista de Clientes potenciales del CRM) |
 | **Consulta de órdenes** | `ordenes.html` + `api/workorders_core.py` | Segundo caso de uso: **lee** órdenes de trabajo de Field Service filtrando por cliente, fecha y estado. Requiere sesión iniciada |
 | Generador de landings | `tools/build_landings.py` | Regenera las 4 landings desde una especificación corta |
+| Alcance comercial | [docs/ALCANCE-API.md](docs/ALCANCE-API.md) | Actividades y horas para implementar **solo la API** en Azure (48 h, trabajando con IA) |
 
 Las cuatro líneas de negocio corresponden a las que el grupo opera en Chile tras la adquisición de
 Teknica y Enersafe por parte de Legrand Chile: infraestructura digital y data centers, respaldo y
