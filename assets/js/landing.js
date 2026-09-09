@@ -31,18 +31,32 @@
 
   function captureTracking() {
     var url = new URL(window.location.href);
-    var stored = {};
-    try { stored = JSON.parse(sessionStorage.getItem(TRACK_KEY) || "{}"); } catch (e) { stored = {}; }
 
+    /* Si la URL trae parametros de campana, es una llegada NUEVA: se reemplaza
+       el bloque completo. Mezclarlo con lo que habia produce registros
+       incoherentes (por ejemplo un lead de Instagram arrastrando el gclid de
+       una visita anterior por Google Ads), y eso destruye la atribucion.
+       Si la URL no trae parametros, se conserva el origen ya capturado: asi el
+       usuario puede navegar por el sitio sin perder de donde llego. */
+    var entrante = {};
     TRACK_PARAMS.forEach(function (p) {
       var v = url.searchParams.get(p);
-      if (v) { stored[p] = v; }
+      if (v) { entrante[p] = v; }
     });
-    // El referrer de la primera visita es el que importa (de donde llego el usuario).
-    if (!stored.referrer) { stored.referrer = document.referrer || "(directo)"; }
+    var llegadaNueva = Object.keys(entrante).length > 0;
+
+    var stored;
+    if (llegadaNueva) {
+      stored = entrante;
+      stored.referrer = document.referrer || "(directo)";
+      stored.capturedAt = new Date().toISOString();
+    } else {
+      try { stored = JSON.parse(sessionStorage.getItem(TRACK_KEY) || "{}"); } catch (e) { stored = {}; }
+      if (!stored.referrer) { stored.referrer = document.referrer || "(directo)"; }
+      if (!stored.capturedAt) { stored.capturedAt = new Date().toISOString(); }
+    }
     stored.landingUrl = window.location.href.split("#")[0];
     stored.pageTitle = document.title;
-    stored.capturedAt = stored.capturedAt || new Date().toISOString();
 
     try { sessionStorage.setItem(TRACK_KEY, JSON.stringify(stored)); } catch (e) { /* modo privado */ }
     return stored;

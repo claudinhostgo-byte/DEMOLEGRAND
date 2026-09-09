@@ -63,8 +63,9 @@
     host.innerHTML = catalog.landings.map(function (l, i) {
       var color = BRAND_COLOR[l.brand] || BRAND_COLOR.wit;
       return '' +
-        '<a class="card lcard" style="--c:' + color + '" href="' + esc(l.url) +
-        '?utm_source=sitio-maestro&utm_medium=demo&utm_campaign=' + esc(l.campaign || "demo") + '">' +
+        /* Sin UTM inyectados: navegar dentro del sitio no debe pisar la
+           campana real con la que llego el visitante. */
+        '<a class="card lcard" style="--c:' + color + '" href="' + esc(l.url) + '">' +
           '<span class="bar"></span>' +
           '<span class="chip chip-accent" style="align-self:flex-start">' +
             esc(BRAND_LABEL[l.brand] || l.brand) + '</span>' +
