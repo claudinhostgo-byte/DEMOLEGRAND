@@ -10,6 +10,8 @@ una demo de arquitectura y de gobierno del dato.
 2. Abrir <http://localhost:8080/> y confirmar que el chip diga **API en línea · Modo MOCK**.
 3. Vaciar leads previos si quieres partir limpio: borrar `api/_data/leads.json`.
 4. Tener abierta en otra pestaña la consola: <http://localhost:8080/admin.html>.
+4b. Si vas a mostrar las órdenes de trabajo, inicia sesión antes en la página publicada: en la
+   reunión no conviene pelear con una pantalla de login.
 5. Si vas a mostrar leads reales en Dynamics, **confirmar antes el entorno** y cambiar
    `LEAD_MODE=dataverse` en `api/.env`.
 
@@ -38,6 +40,11 @@ Una API, cuatro landings, un solo lugar donde se mantiene el mapeo.
 **6. La consola (2 min).** Abrir `admin.html`. Los dos leads con su origen, su campaña y sus campos
 propios. En producción esta pantalla es simplemente la vista de Clientes potenciales de Dynamics, y
 el enlace abre el registro real.
+
+**6b. El segundo caso de uso (2 min).** Abrir `ordenes.html`. Pide iniciar sesión: ese es el
+primer mensaje —la consulta de clientes no puede ser pública—. Ya dentro, filtrar por un cliente y
+un rango de fechas, y mostrar el enlace que abre la orden en Dynamics. El cierre: *es la misma API,
+la misma conexión y el mismo App Registration; una escribe, la otra lee*.
 
 **7. La dificultad y el alcance (3 min).** Volver a la portada, sección *¿Qué tan difícil es
 implementarlo de verdad?*. Ser explícito: la integración es la parte fácil; lo que toma tiempo es

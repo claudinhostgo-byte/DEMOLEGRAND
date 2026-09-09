@@ -74,6 +74,18 @@ en qué Dynamics caen los leads.
 > exige custodia en Key Vault, hay que pasar a *bring your own functions* (plan Estándar) — está
 > contemplado en la estimación como parte del bloque de Azure.
 
+## 4b. Rutas protegidas
+
+`staticwebapp.config.json` declara qué se abre y qué no:
+
+| Ruta | Acceso |
+|---|---|
+| `/`, landings, `POST /api/leads`, `/api/health`, `/api/landings` | Anónimo |
+| `/ordenes*`, `/api/workorders`, `/api/clientes` | Requieren sesión (Entra ID) |
+
+Sin sesión, las rutas protegidas responden `302` hacia `/.auth/login/aad`. Se protegen también los
+endpoints, no solo la página: con la API abierta, el candado sería decorativo.
+
 ## 5. Verificación después del despliegue
 
 ```bash

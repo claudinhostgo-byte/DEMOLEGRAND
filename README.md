@@ -27,6 +27,7 @@ esa línea).
 | Catálogo de orígenes | `api/landings.json` | Fuente única de verdad: códigos, marcas, equipos y campañas. Viaja con la API y se expone en `/api/landings` |
 | Configuración de Azure | `staticwebapp.config.json` | Runtime de la API, cabeceras de seguridad y rutas |
 | Consola de leads | `admin.html` | Muestra lo que llegó por la API (en producción, esto es la vista de Clientes potenciales del CRM) |
+| **Consulta de órdenes** | `ordenes.html` + `api/workorders_core.py` | Segundo caso de uso: **lee** órdenes de trabajo de Field Service filtrando por cliente, fecha y estado. Requiere sesión iniciada |
 | Generador de landings | `tools/build_landings.py` | Regenera las 4 landings desde una especificación corta |
 
 Las cuatro líneas de negocio corresponden a las que el grupo opera en Chile tras la adquisición de
@@ -54,6 +55,8 @@ configuración durante la demo.
 | <http://localhost:8080/admin.html> | Consola de leads capturados |
 | <http://localhost:8080/api/health> | Estado y modo de la API |
 | <http://localhost:8080/api/landings> | Catálogo de orígenes registrados |
+| <http://localhost:8080/ordenes.html> | Consulta de órdenes de trabajo (Field Service) |
+| <http://localhost:8080/api/workorders> | Órdenes filtradas por `cliente`, `desde`, `hasta`, `estado` |
 
 ---
 
