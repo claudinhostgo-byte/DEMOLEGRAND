@@ -245,25 +245,49 @@ def get_token(config):
     return _token_cache["value"]
 
 
+# Fallas transitorias que justifican reintentar: DNS, corte de red, 429 y 5xx.
+REINTENTOS = 3
+ESPERA_ENTRE_REINTENTOS = 1.5
+
+
 def create_lead_dataverse(lead, config):
-    """POST /api/data/v9.2/leads. Devuelve (leadid, url_del_registro)."""
-    token = get_token(config)
+    """POST /api/data/v9.2/leads. Devuelve (leadid, url_del_registro).
+
+    Reintenta ante fallas transitorias de red o del servicio: un lead no se
+    puede perder porque el DNS falle un segundo. Los errores de datos (4xx que
+    no sean 429) no se reintentan, porque reintentar no los arregla."""
     endpoint = "%s/api/data/%s/leads" % (config["dv_url"], config["dv_api"])
     body = json.dumps(lead, ensure_ascii=False).encode("utf-8")  # UTF-8 explicito por los acentos
-    req = urllib.request.Request(endpoint, data=body, method="POST", headers={
-        "Authorization": "Bearer " + token,
-        "Content-Type": "application/json; charset=utf-8",
-        "OData-MaxVersion": "4.0",
-        "OData-Version": "4.0",
-        "Accept": "application/json",
-        "Prefer": "return=representation",
-    })
-    try:
-        with urllib.request.urlopen(req, timeout=45) as res:
-            created = json.loads(res.read().decode("utf-8"))
-    except urllib.error.HTTPError as err:
-        detail = err.read().decode("utf-8", "replace")[:900]
-        raise RuntimeError("Dataverse respondio %s: %s" % (err.code, detail))
+    ultimo_error = None
+
+    for intento in range(1, REINTENTOS + 1):
+        token = get_token(config)
+        req = urllib.request.Request(endpoint, data=body, method="POST", headers={
+            "Authorization": "Bearer " + token,
+            "Content-Type": "application/json; charset=utf-8",
+            "OData-MaxVersion": "4.0",
+            "OData-Version": "4.0",
+            "Accept": "application/json",
+            "Prefer": "return=representation",
+        })
+        try:
+            with urllib.request.urlopen(req, timeout=45) as res:
+                created = json.loads(res.read().decode("utf-8"))
+            break
+        except urllib.error.HTTPError as err:
+            detail = err.read().decode("utf-8", "replace")[:900]
+            ultimo_error = RuntimeError("Dataverse respondio %s: %s" % (err.code, detail))
+            if err.code == 401:
+                _token_cache["value"] = None  # token vencido: renovar y reintentar
+            elif err.code != 429 and err.code < 500:
+                raise ultimo_error  # error de datos: reintentar no cambia nada
+        except (urllib.error.URLError, OSError) as err:
+            ultimo_error = RuntimeError("Fallo de red hacia Dataverse: %s" % err)
+
+        if intento < REINTENTOS:
+            time.sleep(ESPERA_ENTRE_REINTENTOS * intento)
+    else:
+        raise ultimo_error
 
     lead_id = created.get("leadid")
     record_url = "%s/main.aspx?pagetype=entityrecord&etn=lead&id=%s" % (config["dv_url"], lead_id)
