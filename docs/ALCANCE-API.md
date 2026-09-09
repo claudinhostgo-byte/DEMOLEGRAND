@@ -19,7 +19,64 @@ o su agencia; W-IT entrega el contrato de datos y acompaña la conexión.
 
 ---
 
-## Base: 48 horas
+## Actividades con tres ambientes: 62 horas
+
+Vista consolidada por fases, que es como conviene presentarla. Los tres ambientes son
+**desarrollo, QA y producción**, tanto en Azure como en Dynamics.
+
+### Fase 1 · Diseño y habilitación — 14 h
+
+| # | Actividad | Qué incluye | Horas |
+|---|---|---|---:|
+| 1 | Contrato de la API | Payload común para todas las landings, catálogo de códigos de origen, campos obligatorios y propios por línea | 3 |
+| 2 | Identidad en los tres entornos | App Registration en Entra ID, y alta del Application User con su rol de seguridad en desarrollo, QA y producción | 5 |
+| 3 | Modelo de origen en Dataverse | Columnas de código de landing, campaña y UTM, más la vista de leads que las muestra | 3 |
+| 4 | Solución de Dataverse | Empaquetar el modelo como solución y dejar andando el ciclo de exportar e importar entre entornos | 3 |
+
+### Fase 2 · Construcción de la API — 15 h
+
+| # | Actividad | Qué incluye | Horas |
+|---|---|---|---:|
+| 5 | Endpoint de captura | Validación de campos y consentimiento, mapeo a la entidad Lead, manejo de errores y reintento ante fallas transitorias | 8 |
+| 6 | Catálogo configurable | Dar de alta una landing nueva sin desarrollo ni despliegue | 2 |
+| 7 | Protección básica | Captcha, *rate limiting* por IP y CORS restringido a los dominios autorizados | 5 |
+
+### Fase 3 · Infraestructura y observabilidad — 10 h
+
+| # | Actividad | Qué incluye | Horas |
+|---|---|---|---:|
+| 8 | Infraestructura parametrizada | Function App en plan consumo, dominio, TLS y configuración con secretos, por parámetros: levantar el tercer ambiente cuesta minutos | 8 |
+| 9 | Observabilidad | Application Insights con traza por envío y alerta cuando la creación del lead falla | 2 |
+
+### Fase 4 · Promoción entre ambientes — 6 h
+
+| # | Actividad | Qué incluye | Horas |
+|---|---|---|---:|
+| 10 | Pipeline de tres etapas | Desarrollo, QA y producción encadenados, con aprobación antes de producción y configuración propia por ambiente | 5 |
+| 11 | Matriz de ambientes | Qué apunta a qué, quién aprueba cada promoción y cómo se revierte | 1 |
+
+### Fase 5 · Pruebas — 9 h
+
+| # | Actividad | Qué incluye | Horas |
+|---|---|---|---:|
+| 12 | Batería funcional | Casos válidos, campos faltantes, formatos inválidos, acentos y ñ, códigos de origen no registrados | 4 |
+| 13 | Verificación por ambiente | La misma batería ejecutada en QA y una prueba de humo en producción | 2 |
+| 14 | Prueba integrada | Una landing real del cliente conectada extremo a extremo, verificando el lead en el CRM | 3 |
+
+### Fase 6 · Cierre — 8 h
+
+| # | Actividad | Qué incluye | Horas |
+|---|---|---|---:|
+| 15 | Documentación | Contrato de la API para quien construya las landings, guía de alta de una landing nueva y runbook de operación | 3 |
+| 16 | Traspaso | Sesión con TI y marketing | 2 |
+| 17 | Gestión y coordinación | Planificación, avances y control de cambios | 3 |
+
+**Total: 62 horas.** Calendario referencial: **3 a 4 semanas**, condicionado a la disponibilidad de
+los entornos y de las personas del cliente para validar.
+
+---
+
+## Desglose alternativo: base de 48 horas (un solo ambiente)
 
 Estimadas **trabajando con asistencia de IA**, y partiendo de la implementación de referencia que
 ya está funcionando y verificada en la demo.
@@ -47,10 +104,10 @@ las personas del cliente para validar.
 
 ---
 
-## Módulo de tres ambientes: +14 horas
+## Qué cuestan realmente los tres ambientes: +14 horas sobre la base
 
 Trabajar con desarrollo, QA y producción no encarece la API —el código es el mismo— sino **mover
-el modelo de datos entre entornos y repetir las pruebas**. Eso es lo que se agrega:
+el modelo de datos entre entornos y repetir las pruebas**. Este es el delta respecto de la base:
 
 | # | Actividad | Qué incluye | Horas |
 |---|---|---|---:|
