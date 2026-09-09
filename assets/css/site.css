@@ -32,12 +32,13 @@
 
 /* --- Temas por marca ------------------------------------------------ */
 /* Cuatro identidades bien separadas, para que ninguna landing se confunda
-   con otra en la demo: verde azulado, rojo, ambar y azul. */
+   con otra en la demo. El fondo es una version profunda del mismo tono del
+   acento: asi la landing entrega el color que prometio su tarjeta. */
 [data-brand="wit"]       { --bg:#0D3445; --accent:#74E507; --accent-2:#8FF02E; --accent-ink:#0D3445; }
-[data-brand="legrand"]   { --bg:#01001C; --accent:#66A79E; --accent-2:#7AB8B1; --accent-ink:#01001C; }
-[data-brand="teknica"]   { --bg:#33373D; --accent:#F5333F; --accent-2:#FF5A64; --accent-ink:#FFFFFF; }
-[data-brand="industria"] { --bg:#1A1714; --accent:#F2A007; --accent-2:#FFB733; --accent-ink:#1A1714; }
-[data-brand="bticino"]   { --bg:#0B2540; --accent:#00A0DF; --accent-2:#33B5E7; --accent-ink:#04263B; }
+[data-brand="legrand"]   { --bg:#052E2A; --accent:#66A79E; --accent-2:#7AB8B1; --accent-ink:#052E2A; }
+[data-brand="teknica"]   { --bg:#2C080C; --accent:#F5333F; --accent-2:#FF5A64; --accent-ink:#FFFFFF; }
+[data-brand="industria"] { --bg:#33230B; --accent:#F2A007; --accent-2:#FFB733; --accent-ink:#33230B; }
+[data-brand="bticino"]   { --bg:#05293C; --accent:#00A0DF; --accent-2:#33B5E7; --accent-ink:#04263B; }
 
 /* --- Base ----------------------------------------------------------- */
 * { box-sizing: border-box; }
