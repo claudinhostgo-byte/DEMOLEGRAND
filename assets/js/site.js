@@ -91,7 +91,7 @@
         var modo = String(h.mode || "").toUpperCase();
         var destino = h.mode === "dataverse"
           ? "escribe en " + esc(h.dataverse.url)
-          : "no escribe en CRM (leads en api/_data/leads.json)";
+          : "no escribe en CRM (modo demostracion)";
         host.innerHTML =
           '<span class="chip chip-accent">API en linea</span> ' +
           '<span class="chip">Modo: ' + esc(modo) + '</span> ' +
