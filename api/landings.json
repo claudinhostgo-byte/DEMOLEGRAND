@@ -4,7 +4,25 @@
   "defaults": {
     "leadsourcecode": 8,
     "leadsourcecode_label": "Web",
-    "subject_template": "[{code}] {interes} - {company}"
+    "subject_template": "[{code}] {interes} - {company}",
+    "dataverse_columns": {
+      "_comment": "Columnas propias del entorno. Si una queda vacia o se borra, la API simplemente no la escribe: el mismo codigo sirve en un entorno sin estas columnas.",
+      "landing_code": "wit_landingcode",
+      "landing_name": "wit_landingname",
+      "brand": "wit_marca",
+      "owner_team": "wit_equipoasignado",
+      "campaign": "wit_campana",
+      "utm_source": "wit_utmsource",
+      "utm_medium": "wit_utmmedium",
+      "utm_campaign": "wit_utmcampaign",
+      "utm_content": "wit_utmcontent",
+      "click_id": "wit_clickid",
+      "referrer": "wit_referrer",
+      "landing_url": "wit_landingurl",
+      "landing_fields": "wit_camposlanding",
+      "consent": "wit_consentimiento",
+      "submitted_at": "wit_fechaenvio"
+    }
   },
   "landings": [
     {
@@ -18,9 +36,18 @@
       "leadsourcecode": 8,
       "campaign": "DC-2026-Q3",
       "extra_fields": [
-        { "key": "tipoProyecto", "label": "Tipo de proyecto" },
-        { "key": "racks", "label": "Racks estimados" },
-        { "key": "plazo", "label": "Plazo estimado" }
+        {
+          "key": "tipoProyecto",
+          "label": "Tipo de proyecto"
+        },
+        {
+          "key": "racks",
+          "label": "Racks estimados"
+        },
+        {
+          "key": "plazo",
+          "label": "Plazo estimado"
+        }
       ]
     },
     {
@@ -34,9 +61,18 @@
       "leadsourcecode": 8,
       "campaign": "UPS-2026-Q3",
       "extra_fields": [
-        { "key": "potencia", "label": "Potencia requerida (kVA)" },
-        { "key": "criticidad", "label": "Nivel de criticidad" },
-        { "key": "servicio", "label": "Tipo de requerimiento" }
+        {
+          "key": "potencia",
+          "label": "Potencia requerida (kVA)"
+        },
+        {
+          "key": "criticidad",
+          "label": "Nivel de criticidad"
+        },
+        {
+          "key": "servicio",
+          "label": "Tipo de requerimiento"
+        }
       ]
     },
     {
@@ -50,9 +86,18 @@
       "leadsourcecode": 8,
       "campaign": "IND-2026-Q3",
       "extra_fields": [
-        { "key": "perfil", "label": "Perfil del contacto" },
-        { "key": "industria", "label": "Industria" },
-        { "key": "familia", "label": "Familia de producto" }
+        {
+          "key": "perfil",
+          "label": "Perfil del contacto"
+        },
+        {
+          "key": "industria",
+          "label": "Industria"
+        },
+        {
+          "key": "familia",
+          "label": "Familia de producto"
+        }
       ]
     },
     {
@@ -66,9 +111,18 @@
       "leadsourcecode": 8,
       "campaign": "RET-2026-Q3",
       "extra_fields": [
-        { "key": "tipoEdificacion", "label": "Tipo de edificación" },
-        { "key": "superficie", "label": "Superficie aproximada (m²)" },
-        { "key": "etapa", "label": "Etapa del proyecto" }
+        {
+          "key": "tipoEdificacion",
+          "label": "Tipo de edificación"
+        },
+        {
+          "key": "superficie",
+          "label": "Superficie aproximada (m²)"
+        },
+        {
+          "key": "etapa",
+          "label": "Etapa del proyecto"
+        }
       ]
     }
   ]

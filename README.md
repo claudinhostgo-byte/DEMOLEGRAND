@@ -136,10 +136,26 @@ Errores: `400` validación (incluye el detalle campo por campo), `404` ruta desc
 | (generado) | `subject` = `[CÓDIGO] Línea de negocio - Empresa` |
 | origen | `leadsourcecode` = 8 (Web) |
 | `landingCode`, UTM, `fields`, `message` | `description`, en un bloque de trazabilidad legible |
-| opcional | columnas propias declaradas en `.env` (`FIELD_LANDING_CODE`, `FIELD_UTM_SOURCE`, `FIELD_UTM_CAMPAIGN`) |
+| origen completo | 15 columnas propias `wit_*` (ver abajo) |
 
-Si el entorno tiene columnas personalizadas para el origen, se declaran en `api/.env` y la API las
-llena **sin cambiar una línea de código**.
+### Columnas propias del origen
+
+En el entorno `demolegrand` se crearon 15 columnas en la entidad Lead, para que el origen sea
+**dato consultable y filtrable**, no texto dentro de la descripción:
+
+| Columna | Contenido |
+|---|---|
+| `wit_landingcode` · `wit_landingname` | Código y nombre de la landing de origen |
+| `wit_marca` · `wit_equipoasignado` · `wit_campana` | Línea de negocio, equipo dueño y campaña |
+| `wit_utmsource` · `wit_utmmedium` · `wit_utmcampaign` · `wit_utmcontent` | Parámetros de campaña |
+| `wit_clickid` | `gclid`, `fbclid` o `msclkid`, el que venga |
+| `wit_referrer` · `wit_landingurl` | De dónde llegó y desde qué página envió |
+| `wit_camposlanding` | Campos propios de esa línea de negocio |
+| `wit_consentimiento` · `wit_fechaenvio` | Aceptación de tratamiento de datos y momento del envío |
+
+El mapeo está en `api/landings.json`, en `defaults.dataverse_columns`. **Si una columna no está
+declarada ahí, la API no la escribe**: el mismo código funciona contra un entorno que no las tenga
+creadas, y agregar o quitar columnas es configuración, no desarrollo.
 
 ---
 

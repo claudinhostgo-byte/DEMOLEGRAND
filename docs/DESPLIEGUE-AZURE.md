@@ -1,5 +1,12 @@
 # Despliegue en Azure Static Web Apps
 
+> **Estado actual de la demo (09-09-2026)**
+> Sitio publicado: <https://blue-bay-0c37e6c0f.5.azurestaticapps.net/>
+> Recurso: `DEMOLEGRAND` · SKU Free · región `eastus2` · grupo `rg-claudio.castillo-5783`
+> Entorno Dynamics: **`https://demolegrand.crm2.dynamics.com`** en modo `dataverse`
+> Verificado extremo a extremo: las 4 landings crean el lead en el CRM con su
+> código de origen, campaña, UTM y campos propios.
+
 Static Web Apps publica el sitio **y** la API en el mismo dominio: la ruta `/api` queda enrutada a
 las *managed functions* sin necesidad de reglas de CORS. Por eso `apiBaseUrl` en
 `assets/js/config.js` se deja vacío: el front-end llama a `/api/leads` en su propio origen.
@@ -44,12 +51,14 @@ Si Azure retira 3.10, se baja a 3.9 en esa misma línea o se pasa a *bring your 
 
 ## 4. Configuración de la aplicación (los secretos NO van en el repo)
 
-En el portal: **Static Web App → Configuración → Configuración de la aplicación**. Agregar:
+En el portal: **Static Web App → Configuración → Variables de entorno** (antes se llamaba
+*Configuración de la aplicación*), entorno **Producción**. Hay un botón de *Edición avanzada* para
+pegar todas de una vez. Agregar:
 
 | Nombre | Valor | Obligatorio |
 |---|---|---|
 | `LEAD_MODE` | `mock` o `dataverse` | Sí |
-| `DV_URL` | `https://<entorno>.crm2.dynamics.com` | Solo en modo `dataverse` |
+| `DV_URL` | `https://demolegrand.crm2.dynamics.com` (entorno de la demo) | Solo en modo `dataverse` |
 | `DV_TENANT_ID` | Id. del directorio (inquilino) | Solo en modo `dataverse` |
 | `DV_CLIENT_ID` | Id. de aplicación del App Registration | Solo en modo `dataverse` |
 | `DV_CLIENT_SECRET` | Secreto del App Registration | Solo en modo `dataverse` |

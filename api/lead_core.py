@@ -33,6 +33,7 @@ DATA_DIR = os.path.join(API_DIR, "_data")
 MOCK_STORE = os.path.join(DATA_DIR, "leads.json")
 
 EMAIL_RE = re.compile(r"^[^\s@]+@[^\s@]+\.[A-Za-z]{2,}$")
+SALTO = chr(10)  # separador de lineas para el detalle de campos propios
 
 # Limites de longitud de los campos estandar de la entidad Lead en Dataverse.
 MAXLEN = {
@@ -77,11 +78,6 @@ def get_config():
         "dv_client_id": os.environ.get("DV_CLIENT_ID", ""),
         "dv_secret": os.environ.get("DV_CLIENT_SECRET", ""),
         "dv_api": os.environ.get("DV_API_VERSION", "v9.2"),
-        # Columnas personalizadas OPCIONALES: si el entorno las tiene creadas,
-        # se declaran aqui y el codigo no cambia.
-        "field_landing_code": os.environ.get("FIELD_LANDING_CODE", ""),
-        "field_utm_source": os.environ.get("FIELD_UTM_SOURCE", ""),
-        "field_utm_campaign": os.environ.get("FIELD_UTM_CAMPAIGN", ""),
         "port": int(os.environ.get("PORT", "8080")),
     }
 
@@ -204,14 +200,54 @@ def build_lead(payload, landing, defaults, config):
         lead["mobilephone"] = phone
         lead["telephone1"] = phone
 
-    if config["field_landing_code"]:
-        lead[config["field_landing_code"]] = landing["code"]
-    if config["field_utm_source"] and tracking.get("utm_source"):
-        lead[config["field_utm_source"]] = clean(tracking["utm_source"], 100)
-    if config["field_utm_campaign"] and tracking.get("utm_campaign"):
-        lead[config["field_utm_campaign"]] = clean(tracking["utm_campaign"], 100)
-
+    aplicar_columnas_propias(lead, payload, landing, defaults)
     return lead
+
+
+def aplicar_columnas_propias(lead, payload, landing, defaults):
+    """Llena las columnas propias del entorno segun el mapeo declarado en
+    landings.json (defaults.dataverse_columns). Si una columna no esta
+    declarada, no se escribe: el mismo codigo funciona en un entorno que no
+    las tenga creadas."""
+    columnas = {k: v for k, v in (defaults.get("dataverse_columns") or {}).items()
+                if v and not k.startswith("_")}
+    if not columnas:
+        return
+
+    tracking = payload.get("tracking") or {}
+    fields = payload.get("fields") or {}
+    labels = {f["key"]: f.get("label", f["key"]) for f in landing.get("extra_fields", [])}
+
+    detalle = SALTO.join("%s: %s" % (labels.get(k, k), clean(v, 400)) for k, v in fields.items())
+    click_id = next((clean(tracking.get(k), 200) for k in ("gclid", "fbclid", "msclkid")
+                     if tracking.get(k)), "")
+    enviado = (clean((payload.get("client") or {}).get("submittedAt"))
+               or datetime.now(timezone.utc).isoformat(timespec="seconds"))
+
+    valores = {
+        "landing_code":   clean(landing["code"], 30),
+        "landing_name":   clean(landing["name"], 150),
+        "brand":          clean(landing.get("brand"), 30),
+        "owner_team":     clean(landing.get("owner_team"), 100),
+        "campaign":       clean(landing.get("campaign"), 100),
+        "utm_source":     clean(tracking.get("utm_source"), 100),
+        "utm_medium":     clean(tracking.get("utm_medium"), 100),
+        "utm_campaign":   clean(tracking.get("utm_campaign"), 100),
+        "utm_content":    clean(tracking.get("utm_content"), 100),
+        "click_id":       click_id,
+        "referrer":       clean(tracking.get("referrer"), 400),
+        "landing_url":    clean(tracking.get("landingUrl"), 400),
+        "landing_fields": clean(detalle, 4000),
+        "consent":        bool(payload.get("consent")),
+        "submitted_at":   enviado,
+    }
+
+    for clave, columna in columnas.items():
+        valor = valores.get(clave)
+        # Los vacios no se envian: dejan la columna nula en vez de con "".
+        if valor is None or valor == "":
+            continue
+        lead[columna] = valor
 
 
 # ---------------------------------------------------------------- Dataverse
@@ -340,7 +376,9 @@ def health(config=None):
             "configured": bool(config["dv_url"] and config["dv_client_id"]),
             "url": config["dv_url"] or None,
             "apiVersion": config["dv_api"],
-            "customFields": {k: v for k, v in config.items() if k.startswith("field_") and v},
+            "customColumns": sorted(
+                v for k, v in ((load_landings()[0].get("defaults", {}).get("dataverse_columns")) or {}).items()
+                if v and not k.startswith("_")),
         },
         "landings": codes,
         "time": datetime.now(timezone.utc).isoformat(timespec="seconds"),
