@@ -9,7 +9,17 @@ o su agencia; W-IT entrega el contrato de datos y acompaña la conexión.
 
 ---
 
-## Total: 48 horas
+## Resumen
+
+| Escenario | Ambientes | Horas |
+|---|---|---:|
+| **Base** | 1 ambiente de API, Dynamics productivo más uno de pruebas | **48** |
+| **Con tres ambientes** (recomendado si el cliente ya opera así) | Desarrollo, QA y producción, en Azure y en Dynamics | **62** |
+| Con tres ambientes, versión recortada | Igual, pero promoción manual documentada en vez de automatizada | **54** |
+
+---
+
+## Base: 48 horas
 
 Estimadas **trabajando con asistencia de IA**, y partiendo de la implementación de referencia que
 ya está funcionando y verificada en la demo.
@@ -34,6 +44,40 @@ ya está funcionando y verificada en la demo.
 
 Calendario referencial: **2 a 3 semanas**, condicionado a la disponibilidad de los entornos y de
 las personas del cliente para validar.
+
+---
+
+## Módulo de tres ambientes: +14 horas
+
+Trabajar con desarrollo, QA y producción no encarece la API —el código es el mismo— sino **mover
+el modelo de datos entre entornos y repetir las pruebas**. Eso es lo que se agrega:
+
+| # | Actividad | Qué incluye | Horas |
+|---|---|---|---:|
+| 15 | Usuario de aplicación en los tres entornos | Alta del Application User y su rol de seguridad en desarrollo, QA y producción | 2 |
+| 16 | Solución de Dataverse | Empaquetar las columnas de origen y la vista como solución, y el ciclo de exportar e importar entre los tres entornos | 3 |
+| 17 | Infraestructura parametrizada | Un script de despliegue por parámetros: crear el tercer ambiente cuesta minutos, no horas | 3 |
+| 18 | Pipeline de promoción | Tres etapas encadenadas, con aprobación antes de producción y configuración propia por ambiente | 3 |
+| 19 | Pruebas por ambiente | La misma batería ejecutada en QA y una verificación de humo en producción | 2 |
+| 20 | Matriz de ambientes | Qué apunta a qué, quién aprueba cada promoción y cómo se revierte | 1 |
+| | | **Subtotal** | **14** |
+
+**Total con tres ambientes: 62 horas.** Calendario referencial: 3 a 4 semanas.
+
+### Si 50 horas es un tope firme
+
+No alcanza para tres ambientes bien hechos. Hay dos formas de acercarse, en orden de lo que menos
+duele:
+
+1. **Promoción manual documentada** en vez de automatizada: se sacan las actividades 17 y 18 y se
+   entrega un procedimiento paso a paso. Quedan **54 horas**. El costo es que cada paso a
+   producción depende de que alguien siga la guía sin equivocarse.
+2. **Dos ambientes en vez de tres** (QA y producción; el desarrollo se corre local contra el
+   Dynamics de desarrollo). Quedan cerca de **52 horas**, y es lo que yo elegiría si el
+   presupuesto no se mueve: es mejor tener dos ambientes bien gobernados que tres a medias.
+
+Lo que **no** recomiendo recortar para llegar a 50 es la protección básica ni las pruebas: son las
+dos cosas que se pagan caro después.
 
 ---
 
@@ -68,7 +112,9 @@ respecto de una estimación tradicional.
 
 ## Supuestos
 
-- Un entorno productivo de Dynamics y uno de pruebas, ambos disponibles al inicio.
+- Los entornos de Dynamics existen y están disponibles al inicio: dos en el alcance base
+  (producción y pruebas), tres si se toma el módulo de ambientes.
+- Las licencias y la capacidad de los entornos las provee el cliente.
 - Entidad Lead estándar, sin plugins ni procesos personalizados que interfieran.
 - Hasta seis landings iniciales con el mismo contrato de datos.
 - Las landings pueden enviar un `POST` con JSON y se publican en dominios conocidos.
@@ -82,7 +128,8 @@ Si algo de esto cambia, cambia la estimación.
 
 | Cuándo | Qué |
 |---|---|
-| Al inicio | Acceso al entorno Dynamics y a la suscripción Azure, con permisos para crear los recursos |
+| Al inicio | Acceso a los entornos Dynamics y a la suscripción Azure, con permisos para crear los recursos en cada uno |
+| Al inicio | Definición de quién aprueba el paso a producción, si se toma el módulo de tres ambientes |
 | Al inicio | Definición de las líneas de negocio y su dueño comercial |
 | Antes de las pruebas | Una landing real publicada, o al menos su dominio, para autorizarlo en CORS |
 | Antes de salir a producción | Texto de consentimiento validado por su área legal |
@@ -93,7 +140,8 @@ Si algo de esto cambia, cambia la estimación.
 
 1. API desplegada en Azure, operativa y monitoreada.
 2. Código fuente en el repositorio, con el pipeline de despliegue.
-3. Columnas de origen y vista de leads configuradas en Dynamics.
+3. Columnas de origen y vista de leads configuradas en Dynamics, empaquetadas como solución si se
+   toma el módulo de ambientes.
 4. Documento de contrato de la API, con ejemplos listos para copiar.
 5. Guía de alta de una landing nueva y runbook de operación.
 6. Sesión de traspaso al equipo del cliente.
