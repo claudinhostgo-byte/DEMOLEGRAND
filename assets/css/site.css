@@ -328,6 +328,7 @@ footer.site .disclaimer { max-width: 62ch; }
   color: var(--c); text-decoration: none;
 }
 .dg-nodo a.dg-ver:hover { text-decoration: underline; }
+.dg-links { display: flex; flex-wrap: wrap; gap: 6px 18px; margin-top: 8px; }
 .dg-flecha { text-align: center; color: var(--muted); font-size: 1.3rem; line-height: 1; }
 .dg-pie { font-size: .75rem; color: var(--muted); margin-top: 16px; }
 

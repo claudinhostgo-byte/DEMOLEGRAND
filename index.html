@@ -191,8 +191,11 @@
             <b>Dataverse</b>
             <span class="sub">Web API v9.2 con OAuth2 client_credentials. El App Registration entra
               como usuario de aplicación del entorno.</span>
-            <span class="dg-tag">demolegrand.crm2.dynamics.com</span><br>
-            <a class="dg-ver" href="https://demolegrand.crm2.dynamics.com/" target="_blank" rel="noopener">Abrir el entorno &rarr;</a>
+            <span class="dg-tag">demolegrand.crm2.dynamics.com</span>
+            <span class="dg-links">
+              <a class="dg-ver" href="https://demolegrand.crm2.dynamics.com/api/data/v9.2/" target="_blank" rel="noopener">Ver la Web API del entorno &rarr;</a>
+              <a class="dg-ver" href="https://demolegrand.crm2.dynamics.com/" target="_blank" rel="noopener">Abrir el entorno &rarr;</a>
+            </span>
           </div>
         </div>
 
@@ -211,15 +214,19 @@
             <b>Entidad Lead</b>
             <span class="sub">El lead queda con su código de origen, campaña, UTM y campos propios
               en 15 columnas consultables, más el equipo comercial que lo debe atender.</span>
-            <span class="dg-tag">Clientes potenciales</span><br>
-            <a class="dg-ver" href="https://demolegrand.crm2.dynamics.com/main.aspx?pagetype=entitylist&etn=lead&viewid=%7B5A926B99-3A5F-DF11-AE90-00155D2E3002%7D&viewtype=1039" target="_blank" rel="noopener">Ver la vista de leads &rarr;</a>
+            <span class="dg-tag">Clientes potenciales</span>
+            <span class="dg-links">
+              <a class="dg-ver" href="https://demolegrand.crm2.dynamics.com/api/data/v9.2/leads?$select=subject,wit_landingcode,wit_campana,wit_utmsource,wit_utmmedium,wit_equipoasignado,createdon&amp;$orderby=createdon%20desc&amp;$top=10" target="_blank" rel="noopener">Ver los leads en JSON &rarr;</a>
+              <a class="dg-ver" href="https://demolegrand.crm2.dynamics.com/main.aspx?pagetype=entitylist&etn=lead&viewid=%7B5A926B99-3A5F-DF11-AE90-00155D2E3002%7D&viewtype=1039" target="_blank" rel="noopener">Ver la vista de leads &rarr;</a>
+            </span>
           </div>
         </div>
       </div>
     </div>
 
     <p class="dg-pie">
-      Los enlaces a Dynamics 365 requieren una cuenta con acceso al entorno de demostración.
+      Los enlaces a Dynamics 365 requieren tener la sesión iniciada en el entorno de demostración:
+      con sesión activa, la Web API responde el JSON directamente en el navegador.
       Los iconos son representaciones de los servicios de Microsoft utilizados.
     </p>
 
