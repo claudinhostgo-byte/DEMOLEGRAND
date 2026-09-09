@@ -298,6 +298,7 @@
         </p>
         <p style="margin-top:22px">
           <a class="btn btn-dark" href="ordenes.html">Consultar órdenes de trabajo</a>
+          <span class="chip" style="margin-left:10px">Requiere iniciar sesión</span>
         </p>
       </div>
       <div class="card">
@@ -309,8 +310,9 @@
           <li>La consulta enviada, a la vista, igual que en las landings.</li>
         </ul>
         <p class="small muted" style="margin-top:14px;margin-bottom:0">
-          En producción esta pantalla debe quedar detrás de autenticación: Static Web Apps la trae
-          integrada con Entra ID y se activa por configuración, sin desarrollo.
+          Esta pantalla <b>ya está protegida</b>: exige sesión iniciada con Entra ID, tanto la
+          página como sus endpoints. Se activó por configuración en
+          <span class="mono">staticwebapp.config.json</span>, sin escribir código.
         </p>
       </div>
     </div>

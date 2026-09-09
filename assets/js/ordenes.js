@@ -177,8 +177,35 @@
     });
   }
 
+  /* ---------- Sesion (Static Web Apps + Entra ID) ----------
+     La pagina esta protegida por configuracion: si llega aqui es porque ya
+     hay sesion. Esto solo lo hace visible, que en la demo vale mas que el
+     candado invisible. */
+  function sesion() {
+    return fetch("/.auth/me", { cache: "no-store" })
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (d) {
+        var c = d && d.clientPrincipal;
+        if (!c) { return; }
+        var nav = document.querySelector(".topbar nav");
+        if (!nav) { return; }
+        var quien = document.createElement("span");
+        quien.className = "chip";
+        quien.style.cssText = "background:transparent;border-color:rgba(255,255,255,.28);color:#fff";
+        quien.textContent = c.userDetails || "sesión iniciada";
+        var salir = document.createElement("a");
+        salir.href = "/.auth/logout";
+        salir.className = "hide-sm";
+        salir.textContent = "Salir";
+        nav.insertBefore(quien, nav.firstChild);
+        nav.appendChild(salir);
+      })
+      .catch(function () { /* en local no existe /.auth: no pasa nada */ });
+  }
+
   function boot() {
     atajos();
+    sesion();
     cargarFiltros().then(buscar);
   }
 
