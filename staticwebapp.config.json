@@ -24,19 +24,7 @@
   },
   "routes": [
     {
-      "route": "/api/leads",
-      "allowedRoles": [
-        "anonymous"
-      ]
-    },
-    {
-      "route": "/api/health",
-      "allowedRoles": [
-        "anonymous"
-      ]
-    },
-    {
-      "route": "/api/landings",
+      "route": "/api/*",
       "allowedRoles": [
         "anonymous"
       ]
@@ -44,26 +32,8 @@
     {
       "route": "/ordenes*",
       "allowedRoles": [
-        "authenticated"
-      ]
-    },
-    {
-      "route": "/api/workorders",
-      "allowedRoles": [
-        "authenticated"
-      ]
-    },
-    {
-      "route": "/api/clientes",
-      "allowedRoles": [
-        "authenticated"
+        "anonymous"
       ]
     }
-  ],
-  "responseOverrides": {
-    "401": {
-      "statusCode": 302,
-      "redirect": "/.auth/login/aad"
-    }
-  }
+  ]
 }

@@ -298,7 +298,6 @@
         </p>
         <p style="margin-top:22px">
           <a class="btn btn-dark" href="ordenes.html">Consultar órdenes de trabajo</a>
-          <span class="chip" style="margin-left:10px">Requiere iniciar sesión</span>
         </p>
       </div>
       <div class="card">
@@ -310,9 +309,11 @@
           <li>La consulta enviada, a la vista, igual que en las landings.</li>
         </ul>
         <p class="small muted" style="margin-top:14px;margin-bottom:0">
-          Esta pantalla <b>ya está protegida</b>: exige sesión iniciada con Entra ID, tanto la
-          página como sus endpoints. Se activó por configuración en
-          <span class="mono">staticwebapp.config.json</span>, sin escribir código.
+          La consulta se resuelve con el <b>usuario de aplicación</b>: la API se autentica contra
+          Dataverse con su propio App Registration y el visitante no necesita cuenta. Para exigir
+          inicio de sesión basta declarar la ruta con
+          <span class="mono">allowedRoles</span> en
+          <span class="mono">staticwebapp.config.json</span> — es configuración, no desarrollo.
         </p>
       </div>
     </div>
