@@ -211,7 +211,10 @@ TEMPLATE = """<!DOCTYPE html>
         <h3>{form_title}</h3>
         <p class="small muted">{form_lead}</p>
 
-        <form data-landing-code="{code}" novalidate>
+        <!-- onsubmit="return false" bloquea el envio nativo aunque el visitante
+             apriete Enter antes de que cargue el JS: sin esto, sus datos
+             personales terminan en la barra de direcciones. -->
+        <form data-landing-code="{code}" novalidate onsubmit="return false;">
           <div class="form-grid">
             <div class="field">
               <label for="f-nombre-{slug}">Nombre <span class="req">*</span></label>

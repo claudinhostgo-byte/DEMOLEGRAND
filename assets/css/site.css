@@ -277,3 +277,68 @@ footer.site .disclaimer { max-width: 62ch; }
   padding: 8px 0; text-align: center;
 }
 .demobar a { color: #0D3445; }
+
+/* --- Diagrama de la integracion --------------------------------------- */
+.diagrama {
+  display: grid; grid-template-columns: minmax(0, 1fr) 118px minmax(0, 1.05fr);
+  align-items: center; margin-bottom: 12px;
+}
+.dg-col { display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+.dg-titulo {
+  font-family: var(--font-head); font-size: .7rem; letter-spacing: .14em;
+  text-transform: uppercase; color: var(--muted); margin-bottom: 4px;
+}
+
+/* Las 4 landings */
+.dg-landing {
+  display: block; text-decoration: none; color: inherit; background: var(--surface);
+  border: 1px solid var(--line); border-left: 4px solid var(--c, var(--accent));
+  border-radius: 10px; padding: 11px 14px; box-shadow: var(--shadow);
+  transition: transform .15s ease, box-shadow .15s ease;
+}
+.dg-landing:hover { transform: translateX(4px); box-shadow: var(--shadow-lg); }
+.dg-landing .dg-code {
+  font-family: ui-monospace, Consolas, monospace; font-size: .7rem; font-weight: 700;
+  color: var(--c, var(--accent)); letter-spacing: .04em;
+}
+.dg-landing b { display: block; font-family: var(--font-head); font-size: .9rem; margin: 2px 0 3px; }
+.dg-landing .dg-abrir { font-size: .74rem; font-weight: 700; color: var(--c, var(--accent)); }
+
+/* Conector: 4 curvas que convergen en un punto */
+.dg-conector { align-self: stretch; display: flex; }
+.dg-conector svg { width: 100%; height: 100%; min-height: 230px; }
+
+/* Cadena API -> Dataverse -> Lead */
+.dg-nodo {
+  display: grid; grid-template-columns: 40px 1fr; gap: 14px; align-items: start;
+  background: var(--surface); border: 1px solid var(--line); border-radius: 12px;
+  padding: 15px 17px; box-shadow: var(--shadow);
+}
+.dg-nodo.hi { border-color: var(--c); box-shadow: 0 0 0 3px color-mix(in srgb, var(--c) 16%, transparent); }
+.dg-nodo .ico { width: 40px; height: 40px; }
+.dg-nodo b { display: block; font-family: var(--font-head); font-size: .97rem; }
+.dg-nodo .sub { display: block; font-size: .78rem; color: var(--muted); margin: 3px 0 7px; }
+.dg-nodo .dg-tag {
+  display: inline-block; font-family: ui-monospace, Consolas, monospace; font-size: .72rem;
+  background: var(--surface-2); border: 1px solid var(--line); border-radius: 6px;
+  padding: 2px 7px; margin-bottom: 8px;
+}
+.dg-nodo a.dg-ver {
+  display: inline-flex; align-items: center; gap: 5px; font-size: .78rem; font-weight: 700;
+  color: var(--c); text-decoration: none;
+}
+.dg-nodo a.dg-ver:hover { text-decoration: underline; }
+.dg-flecha { text-align: center; color: var(--muted); font-size: 1.3rem; line-height: 1; }
+.dg-pie { font-size: .75rem; color: var(--muted); margin-top: 16px; }
+
+/* Responsive del diagrama: va al final para ganarle a las reglas base.
+   El selector usa .dg-conector + .dg-col porque el conector sigue en el DOM
+   entre ambas columnas aunque este oculto. */
+@media (max-width: 940px) {
+  .diagrama { grid-template-columns: 1fr; gap: 18px; }
+  .dg-conector { display: none; }
+  .dg-conector + .dg-col::before {
+    content: "93"; display: block; text-align: center; font-size: 1.7rem;
+    line-height: 1; color: var(--muted); margin-bottom: 10px;
+  }
+}

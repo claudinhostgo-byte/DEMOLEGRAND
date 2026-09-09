@@ -50,7 +50,10 @@
         <h3>Cotiza tu proyecto de data center</h3>
         <p class="small muted">Un especialista de infraestructura digital te contacta con el levantamiento inicial.</p>
 
-        <form data-landing-code="LGD-DC-001" novalidate>
+        <!-- onsubmit="return false" bloquea el envio nativo aunque el visitante
+             apriete Enter antes de que cargue el JS: sin esto, sus datos
+             personales terminan en la barra de direcciones. -->
+        <form data-landing-code="LGD-DC-001" novalidate onsubmit="return false;">
           <div class="form-grid">
             <div class="field">
               <label for="f-nombre-datacenter">Nombre <span class="req">*</span></label>

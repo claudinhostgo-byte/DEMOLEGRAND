@@ -50,7 +50,10 @@
         <h3>Conversemos tu proyecto de edificación</h3>
         <p class="small muted">Te contactamos con el equipo de terciario y retail para revisar especificación y volúmenes.</p>
 
-        <form data-landing-code="LGD-RET-004" novalidate>
+        <!-- onsubmit="return false" bloquea el envio nativo aunque el visitante
+             apriete Enter antes de que cargue el JS: sin esto, sus datos
+             personales terminan en la barra de direcciones. -->
+        <form data-landing-code="LGD-RET-004" novalidate onsubmit="return false;">
           <div class="form-grid">
             <div class="field">
               <label for="f-nombre-retail-terciario">Nombre <span class="req">*</span></label>
