@@ -163,7 +163,7 @@ SPECS = [
 ]
 
 TEMPLATE = """<!DOCTYPE html>
-<html lang="es-CL" data-brand="{brand}">
+<html lang="es-CL" data-brand="{theme}">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -208,14 +208,20 @@ TEMPLATE = """<!DOCTYPE html>
       </div>
 
       <div class="form-shell">
-        <h3>{form_title}</h3>
-        <p class="small muted">{form_lead}</p>
+        <div class="form-cab">
+          <span class="codigo">{code}</span>
+          <h3>{form_title}</h3>
+          <p>{form_lead}</p>
+        </div>
+
+        <div class="form-cuerpo">
 
         <!-- onsubmit="return false" bloquea el envio nativo aunque el visitante
              apriete Enter antes de que cargue el JS: sin esto, sus datos
              personales terminan en la barra de direcciones. -->
         <form data-landing-code="{code}" novalidate onsubmit="return false;">
           <div class="form-grid">
+            <span class="form-bloque">Tus datos</span>
             <div class="field">
               <label for="f-nombre-{slug}">Nombre <span class="req">*</span></label>
               <input id="f-nombre-{slug}" name="firstName" type="text" autocomplete="given-name" required>
@@ -247,6 +253,8 @@ TEMPLATE = """<!DOCTYPE html>
               <span class="err"></span>
             </div>
 
+            <span class="form-bloque sep">Sobre tu requerimiento</span>
+
 {extras_html}
 
             <div class="field full">
@@ -277,6 +285,7 @@ TEMPLATE = """<!DOCTYPE html>
           Este formulario envía a <span class="mono">POST /api/leads</span> con el código de origen
           <span class="mono">{code}</span>. Es el mismo endpoint que usan las otras tres landings.
         </p>
+        </div>
       </div>
     </div>
   </div>
@@ -374,6 +383,7 @@ def build():
         wordmark, ls = BRAND_WORDMARK[spec["brand"]]
         html = TEMPLATE.format(
             brand=spec["brand"],
+            theme=meta.get("theme", spec["brand"]),
             code=spec["code"],
             slug=spec["slug"],
             name=meta["name"],

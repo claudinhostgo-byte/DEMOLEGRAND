@@ -7,11 +7,20 @@
   var CFG = window.DEMO_CONFIG || {};
   var LEADS_KEY = "witdemo.leads";
 
-  var BRAND_COLOR = {
+  /* Un color por landing, bien separados entre si: verde azulado, rojo,
+     ambar y azul. Debe coincidir con los temas de site.css. */
+  var TEMA_COLOR = {
     legrand: "#66A79E",
     teknica: "#F5333F",
-    bticino: "#51857E",
+    industria: "#F2A007",
+    bticino: "#00A0DF",
     wit: "#74E507"
+  };
+  var CODIGO_COLOR = {
+    "LGD-DC-001": "#66A79E",
+    "TKN-UPS-002": "#F5333F",
+    "LGD-IND-003": "#F2A007",
+    "LGD-RET-004": "#00A0DF"
   };
   var BRAND_LABEL = {
     legrand: "Legrand",
@@ -25,16 +34,16 @@
   var FALLBACK = {
     defaults: { leadsourcecode: 8 },
     landings: [
-      { code: "LGD-DC-001", brand: "legrand", name: "Data Center e Infraestructura Digital",
+      { code: "LGD-DC-001", theme: "legrand", brand: "legrand", name: "Data Center e Infraestructura Digital",
         tagline: "Cableado estructurado LCS3, racks y distribucion de energia para data centers",
         url: "landings/datacenter.html", owner_team: "Infraestructura Digital", campaign: "DC-2026-Q3" },
-      { code: "TKN-UPS-002", brand: "teknica", name: "UPS, Power Quality y Continuidad Operacional",
+      { code: "TKN-UPS-002", theme: "teknica", brand: "teknica", name: "UPS, Power Quality y Continuidad Operacional",
         tagline: "Respaldo de energia, calidad de energia y mantencion de infraestructura critica",
         url: "landings/ups-continuidad.html", owner_team: "Teknica - Continuidad Operacional", campaign: "UPS-2026-Q3" },
-      { code: "LGD-IND-003", brand: "legrand", name: "Industria: Distribucion de Energia y Tableros",
+      { code: "LGD-IND-003", theme: "industria", brand: "legrand", name: "Industria: Distribucion de Energia y Tableros",
         tagline: "Proteccion modular, ductos de barra, canalizacion y bandejas para industria y mineria",
         url: "landings/industria.html", owner_team: "Industria y Proyectos", campaign: "IND-2026-Q3" },
-      { code: "LGD-RET-004", brand: "bticino", name: "Retail, Hospitales y Edificios",
+      { code: "LGD-RET-004", theme: "bticino", brand: "bticino", name: "Retail, Hospitales y Edificios",
         tagline: "Soluciones Bticino para el sector terciario: retail, salud, hoteleria y oficinas",
         url: "landings/retail-terciario.html", owner_team: "Terciario y Retail", campaign: "RET-2026-Q3" }
     ]
@@ -61,7 +70,7 @@
     if (!host) { return; }
 
     host.innerHTML = catalog.landings.map(function (l, i) {
-      var color = BRAND_COLOR[l.brand] || BRAND_COLOR.wit;
+      var color = CODIGO_COLOR[l.code] || TEMA_COLOR[l.theme || l.brand] || TEMA_COLOR.wit;
       return '' +
         /* Sin UTM inyectados: navegar dentro del sitio no debe pisar la
            campana real con la que llego el visitante. */
@@ -168,7 +177,7 @@
       var extras = Object.keys(l.fields || {}).map(function (k) {
         return '<span class="chip">' + esc(k) + ": " + esc(l.fields[k]) + "</span>";
       }).join(" ");
-      var color = BRAND_COLOR[(l.landingCode || "").slice(0, 3) === "TKN" ? "teknica" : "legrand"];
+      var color = CODIGO_COLOR[l.landingCode] || "#5C6670";
 
       return "<tr>" +
         '<td class="small mono">' + esc((l.at || l.receivedAt || "").replace("T", " ").replace("+00:00", "")) + "</td>" +

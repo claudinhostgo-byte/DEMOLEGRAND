@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es-CL" data-brand="legrand">
+<html lang="es-CL" data-brand="industria">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -47,14 +47,20 @@
       </div>
 
       <div class="form-shell">
-        <h3>Solicita apoyo técnico o comercial</h3>
-        <p class="small muted">Atendemos a tableristas, integradores, distribuidores, proyectistas y usuarios finales.</p>
+        <div class="form-cab">
+          <span class="codigo">LGD-IND-003</span>
+          <h3>Solicita apoyo técnico o comercial</h3>
+          <p>Atendemos a tableristas, integradores, distribuidores, proyectistas y usuarios finales.</p>
+        </div>
+
+        <div class="form-cuerpo">
 
         <!-- onsubmit="return false" bloquea el envio nativo aunque el visitante
              apriete Enter antes de que cargue el JS: sin esto, sus datos
              personales terminan en la barra de direcciones. -->
         <form data-landing-code="LGD-IND-003" novalidate onsubmit="return false;">
           <div class="form-grid">
+            <span class="form-bloque">Tus datos</span>
             <div class="field">
               <label for="f-nombre-industria">Nombre <span class="req">*</span></label>
               <input id="f-nombre-industria" name="firstName" type="text" autocomplete="given-name" required>
@@ -85,6 +91,8 @@
               <input id="f-cargo-industria" name="jobTitle" type="text" autocomplete="organization-title">
               <span class="err"></span>
             </div>
+
+            <span class="form-bloque sep">Sobre tu requerimiento</span>
 
             <div class="field">
               <label for="f-perfil-industria">Tu perfil <span class="req">*</span></label>
@@ -152,6 +160,7 @@
           Este formulario envía a <span class="mono">POST /api/leads</span> con el código de origen
           <span class="mono">LGD-IND-003</span>. Es el mismo endpoint que usan las otras tres landings.
         </p>
+        </div>
       </div>
     </div>
   </div>

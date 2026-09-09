@@ -31,10 +31,13 @@
 }
 
 /* --- Temas por marca ------------------------------------------------ */
-[data-brand="wit"]     { --bg:#0D3445; --accent:#74E507; --accent-2:#8FF02E; --accent-ink:#0D3445; }
-[data-brand="legrand"] { --bg:#01001C; --accent:#66A79E; --accent-2:#7AB8B1; --accent-ink:#01001C; }
-[data-brand="teknica"] { --bg:#33373D; --accent:#F5333F; --accent-2:#FF5A64; --accent-ink:#FFFFFF; }
-[data-brand="bticino"] { --bg:#1A2D3B; --accent:#51857E; --accent-2:#66A79E; --accent-ink:#FFFFFF; }
+/* Cuatro identidades bien separadas, para que ninguna landing se confunda
+   con otra en la demo: verde azulado, rojo, ambar y azul. */
+[data-brand="wit"]       { --bg:#0D3445; --accent:#74E507; --accent-2:#8FF02E; --accent-ink:#0D3445; }
+[data-brand="legrand"]   { --bg:#01001C; --accent:#66A79E; --accent-2:#7AB8B1; --accent-ink:#01001C; }
+[data-brand="teknica"]   { --bg:#33373D; --accent:#F5333F; --accent-2:#FF5A64; --accent-ink:#FFFFFF; }
+[data-brand="industria"] { --bg:#1A1714; --accent:#F2A007; --accent-2:#FFB733; --accent-ink:#1A1714; }
+[data-brand="bticino"]   { --bg:#0B2540; --accent:#00A0DF; --accent-2:#33B5E7; --accent-ink:#04263B; }
 
 /* --- Base ----------------------------------------------------------- */
 * { box-sizing: border-box; }
@@ -344,3 +347,26 @@ footer.site .disclaimer { max-width: 62ch; }
     line-height: 1; color: var(--muted); margin-bottom: 10px;
   }
 }
+
+/* --- Cabecera del formulario de la landing ---------------------------- */
+.form-shell { padding: 0; overflow: hidden; }
+.form-cab {
+  background: var(--bg); color: #fff; padding: 20px 26px 18px;
+  border-bottom: 4px solid var(--accent);
+}
+.form-cab .codigo {
+  display: inline-block; font-family: ui-monospace, Consolas, monospace; font-size: .7rem;
+  font-weight: 700; letter-spacing: .08em; color: var(--accent);
+  border: 1px solid color-mix(in srgb, var(--accent) 45%, transparent);
+  border-radius: 999px; padding: 3px 10px; margin-bottom: 10px;
+}
+.form-cab h3 { color: #fff; margin: 0 0 4px; font-size: 1.12rem; }
+.form-cab p { margin: 0; font-size: .85rem; color: rgba(255,255,255,.72); }
+.form-cuerpo { padding: 24px 26px 26px; }
+.form-bloque {
+  font-family: var(--font-head); font-size: .7rem; font-weight: 700; letter-spacing: .13em;
+  text-transform: uppercase; color: var(--muted); grid-column: 1 / -1;
+  display: flex; align-items: center; gap: 12px; margin-top: 4px;
+}
+.form-bloque::after { content: ""; flex: 1; height: 1px; background: var(--line); }
+.form-bloque.sep { margin-top: 14px; }

@@ -47,14 +47,20 @@
       </div>
 
       <div class="form-shell">
-        <h3>Cotiza tu proyecto de data center</h3>
-        <p class="small muted">Un especialista de infraestructura digital te contacta con el levantamiento inicial.</p>
+        <div class="form-cab">
+          <span class="codigo">LGD-DC-001</span>
+          <h3>Cotiza tu proyecto de data center</h3>
+          <p>Un especialista de infraestructura digital te contacta con el levantamiento inicial.</p>
+        </div>
+
+        <div class="form-cuerpo">
 
         <!-- onsubmit="return false" bloquea el envio nativo aunque el visitante
              apriete Enter antes de que cargue el JS: sin esto, sus datos
              personales terminan en la barra de direcciones. -->
         <form data-landing-code="LGD-DC-001" novalidate onsubmit="return false;">
           <div class="form-grid">
+            <span class="form-bloque">Tus datos</span>
             <div class="field">
               <label for="f-nombre-datacenter">Nombre <span class="req">*</span></label>
               <input id="f-nombre-datacenter" name="firstName" type="text" autocomplete="given-name" required>
@@ -85,6 +91,8 @@
               <input id="f-cargo-datacenter" name="jobTitle" type="text" autocomplete="organization-title">
               <span class="err"></span>
             </div>
+
+            <span class="form-bloque sep">Sobre tu requerimiento</span>
 
             <div class="field">
               <label for="f-tipoProyecto-datacenter">Tipo de proyecto <span class="req">*</span></label>
@@ -149,6 +157,7 @@
           Este formulario envía a <span class="mono">POST /api/leads</span> con el código de origen
           <span class="mono">LGD-DC-001</span>. Es el mismo endpoint que usan las otras tres landings.
         </p>
+        </div>
       </div>
     </div>
   </div>

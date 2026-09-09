@@ -48,7 +48,8 @@
           "key": "plazo",
           "label": "Plazo estimado"
         }
-      ]
+      ],
+      "theme": "legrand"
     },
     {
       "code": "TKN-UPS-002",
@@ -73,7 +74,8 @@
           "key": "servicio",
           "label": "Tipo de requerimiento"
         }
-      ]
+      ],
+      "theme": "teknica"
     },
     {
       "code": "LGD-IND-003",
@@ -98,7 +100,8 @@
           "key": "familia",
           "label": "Familia de producto"
         }
-      ]
+      ],
+      "theme": "industria"
     },
     {
       "code": "LGD-RET-004",
@@ -123,7 +126,8 @@
           "key": "etapa",
           "label": "Etapa del proyecto"
         }
-      ]
+      ],
+      "theme": "bticino"
     }
   ]
 }
