@@ -29,6 +29,7 @@ esa línea).
 | Consola de leads | `admin.html` | Muestra lo que llegó por la API (en producción, esto es la vista de Clientes potenciales del CRM) |
 | **Consulta de órdenes** | `ordenes.html` + `api/workorders_core.py` | Segundo caso de uso: **lee** órdenes de trabajo de Field Service filtrando por cliente, fecha y estado. Requiere sesión iniciada |
 | Generador de landings | `tools/build_landings.py` | Regenera las 4 landings desde una especificación corta |
+| Colección Postman | [docs/postman/](docs/postman/DEMOLEGRAND.postman_collection.json) | Los 6 endpoints listos para importar y probar contra el sitio publicado |
 | Alcance comercial · API | [docs/ALCANCE-API.md](docs/ALCANCE-API.md) | Actividades y horas para implementar **solo la API** en Azure: 48 h base, 62 h con tres ambientes |
 | Alcance comercial · Portal | [docs/ALCANCE-PORTAL-OT.md](docs/ALCANCE-PORTAL-OT.md) | Portal autenticado de órdenes de trabajo para clientes externos con Entra ID: 84 h con tres ambientes |
 
@@ -128,6 +129,25 @@ Respuesta (201):
 
 Errores: `400` validación (incluye el detalle campo por campo), `404` ruta desconocida,
 `502` si Dataverse rechaza la creación (el envío igual queda registrado localmente para no perderlo).
+
+### Consumirla desde Postman o curl
+
+Base: **`https://blue-bay-0c37e6c0f.5.azurestaticapps.net/api`** — sin clave ni token.
+
+| Método | Ruta | Para qué |
+|---|---|---|
+| `GET` | `/health` | Modo activo, entorno de destino y orígenes registrados |
+| `GET` | `/landings` | Catálogo de códigos de origen |
+| `POST` | `/leads` | Crea el lead en Dynamics. Responde `201` con `leadId` y `recordUrl` |
+| `GET` | `/leads` | Últimos envíos recibidos |
+| `GET` | `/clientes` | Cuentas con órdenes y catálogo de estados |
+| `GET` | `/workorders` | Órdenes de Field Service. Filtros: `cliente`, `desde`, `hasta`, `estado`, `top` |
+
+La colección lista para importar está en
+[`docs/postman/DEMOLEGRAND.postman_collection.json`](docs/postman/DEMOLEGRAND.postman_collection.json).
+
+> `POST /leads` crea un lead **real** en `demolegrand`. Para reconocer las pruebas después,
+> conviene usar `utm_source=postman` en el bloque `tracking`, como trae el ejemplo de la colección.
 
 ### Mapeo a la entidad Lead
 

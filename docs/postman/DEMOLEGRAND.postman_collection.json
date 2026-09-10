@@ -1,0 +1,250 @@
+{
+  "info": {
+    "name": "DEMOLEGRAND · API W-IT",
+    "description": "API única de la demo Legrand + Teknica.\n\nEscribe leads en la entidad Lead y consulta órdenes de trabajo de Field Service, ambos contra el entorno demolegrand.crm2.dynamics.com.\n\nNo requiere clave ni token: la API se autentica contra Dataverse con su propio usuario de aplicación. OJO: POST /api/leads crea un lead REAL en el entorno de demostración.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://blue-bay-0c37e6c0f.5.azurestaticapps.net",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Salud de la API",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/health",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "health"
+          ]
+        },
+        "description": "Modo activo (mock o dataverse), entorno de destino, columnas propias mapeadas y códigos de landing registrados."
+      }
+    },
+    {
+      "name": "Catálogo de landings",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/landings",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "landings"
+          ]
+        },
+        "description": "Los orígenes registrados. Un landingCode que no esté aquí es rechazado por la API."
+      }
+    },
+    {
+      "name": "Crear lead",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json; charset=utf-8"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/leads",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "leads"
+          ]
+        },
+        "description": "Crea el lead en Dynamics. Responde 201 con el leadId y el recordUrl para abrirlo en el CRM.\n\nCambia landingCode por LGD-DC-001, LGD-IND-003 o LGD-RET-004 y ajusta el bloque fields según los campos propios de esa landing.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"landingCode\": \"TKN-UPS-002\",\n  \"firstName\": \"Nombre\",\n  \"lastName\": \"Apellido\",\n  \"email\": \"correo@empresa.cl\",\n  \"phone\": \"+56 9 1234 5678\",\n  \"company\": \"Empresa de prueba\",\n  \"jobTitle\": \"Cargo\",\n  \"message\": \"Enviado desde Postman para probar la API.\",\n  \"consent\": true,\n  \"fields\": {\n    \"potencia\": \"50 a 200 kVA\",\n    \"criticidad\": \"Crítica: opera 24/7 sin margen de corte\"\n  },\n  \"tracking\": {\n    \"utm_source\": \"postman\",\n    \"utm_medium\": \"prueba\",\n    \"utm_campaign\": \"UPS-2026-Q3\",\n    \"referrer\": \"(directo)\",\n    \"landingUrl\": \"https://blue-bay-0c37e6c0f.5.azurestaticapps.net/landings/ups-continuidad.html\"\n  }\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "Crear lead · validación fallida",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json; charset=utf-8"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/leads",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "leads"
+          ]
+        },
+        "description": "Ejemplo de 400: origen inexistente, correo mal formado y sin consentimiento. La respuesta trae el detalle campo por campo.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"landingCode\": \"NO-EXISTE-001\",\n  \"firstName\": \"Ana\",\n  \"email\": \"no-es-correo\",\n  \"consent\": false\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "Leads capturados",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/leads",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "leads"
+          ]
+        },
+        "description": "Últimos envíos recibidos por la API, con su payload de Dynamics. Alimenta la consola de la demo."
+      }
+    },
+    {
+      "name": "Clientes con órdenes",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/clientes",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "clientes"
+          ]
+        },
+        "description": "Cuentas que tienen al menos una orden de trabajo, y el catálogo de estados. Sirve para armar los filtros."
+      }
+    },
+    {
+      "name": "Órdenes de trabajo · todas",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/workorders?top=10",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "workorders"
+          ],
+          "query": [
+            {
+              "key": "top",
+              "value": "10",
+              "description": "Máximo 200"
+            }
+          ]
+        },
+        "description": "Órdenes de Field Service. Sin filtros devuelve las más recientes."
+      }
+    },
+    {
+      "name": "Órdenes de trabajo · filtradas",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/workorders?desde=2026-08-01&hasta=2026-12-31&estado=690970003&top=50",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "workorders"
+          ],
+          "query": [
+            {
+              "key": "cliente",
+              "value": "",
+              "description": "GUID de la cuenta, desde /api/clientes"
+            },
+            {
+              "key": "desde",
+              "value": "2026-08-01",
+              "description": "AAAA-MM-DD"
+            },
+            {
+              "key": "hasta",
+              "value": "2026-12-31",
+              "description": "AAAA-MM-DD"
+            },
+            {
+              "key": "estado",
+              "value": "690970003",
+              "description": "690970000 Sin programar · 690970001 Programada · 690970002 En curso · 690970003 Completada · 690970004 Registrada · 690970005 Cancelada"
+            },
+            {
+              "key": "top",
+              "value": "50",
+              "description": "Máximo 200"
+            }
+          ]
+        },
+        "description": "Filtros combinables. cliente es el GUID que entrega /api/clientes; las fechas van como AAAA-MM-DD; estado usa el código del conjunto de opciones (690970003 = Completada)."
+      }
+    },
+    {
+      "name": "Órdenes de trabajo · filtro inválido",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/workorders?cliente=abc&desde=ayer",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "workorders"
+          ],
+          "query": [
+            {
+              "key": "cliente",
+              "value": "abc"
+            },
+            {
+              "key": "desde",
+              "value": "ayer"
+            }
+          ]
+        },
+        "description": "Ejemplo de 400: el identificador no es un GUID y la fecha no tiene formato. La API los rechaza antes de armar la consulta OData."
+      }
+    }
+  ]
+}
